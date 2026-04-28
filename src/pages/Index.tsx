@@ -4,8 +4,12 @@ import Icon from "@/components/ui/icon";
 const HERO_IMG = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/6b7e9073-dca0-40c0-8842-8b89fd115646.jpg";
 const ENERGY_IMG = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/cc8026cd-e87c-4bce-9228-ce70d3ac8717.jpg";
 const PANORAMA_IMG = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/33b6b822-bff2-4134-9069-e0e3a9618e50.jpg";
-const LAGONAKI_IMG = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/35de0d94-bc5e-49ef-9987-53f4ed783012.jpg";
-const EAGLE_IMG = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/f7fd7bf8-fa02-4d9d-bce9-34854174c43e.jpg";
+// User real photos
+const PHOTO_CRATER = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/bucket/968860a0-da39-4498-993a-c96aa98951ea.jpg";
+const PHOTO_TRAIL = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/bucket/f82db171-0eca-4ce8-b019-b374d619c6f9.jpg";
+const PHOTO_SHELF = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/bucket/704e0080-5a01-4d80-b98d-f7a8b6cb8a84.jpg";
+const PHOTO_PEAKS = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/bucket/33ae11ed-aa4e-4219-813a-4aaa9230f256.jpg";
+const PHOTO_ROCKS = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/bucket/516235c4-83fe-486e-9d6d-4fcfa3f52184.jpg";
 
 const adygheaTours = [
   {
@@ -15,7 +19,8 @@ const adygheaTours = [
     desc: "Очистительный сеанс на вершине плато — сброс старой энергии и наполнение новой. Панорама горных хребтов на 360°.",
     practice: "Очищение и наполнение",
     alt: "Высота 1744 м",
-    img: LAGONAKI_IMG,
+    img: PHOTO_CRATER,
+    gallery: [PHOTO_CRATER, PHOTO_PEAKS],
     icon: "🏔️",
     color: "#5a8a6e",
   },
@@ -26,7 +31,8 @@ const adygheaTours = [
     desc: "Точка силы над ущельем — чистка энергетических меридианов и мощное наполнение через горный воздух и пространство.",
     practice: "Чистка меридианов",
     alt: "Над ущельем",
-    img: EAGLE_IMG,
+    img: PHOTO_TRAIL,
+    gallery: [PHOTO_TRAIL, PHOTO_ROCKS],
     icon: "🦅",
     color: "#7a6e3a",
   },
@@ -37,7 +43,8 @@ const adygheaTours = [
     desc: "Легендарная скальная полка — место, где гнездятся орлы и концентрируется энергия свободы. Практика выхода за пределы.",
     practice: "Энергия свободы",
     alt: "Скальная полка",
-    img: LAGONAKI_IMG,
+    img: PHOTO_SHELF,
+    gallery: [PHOTO_SHELF, PHOTO_ROCKS],
     icon: "🪶",
     color: "#5a8a6e",
   },
@@ -234,17 +241,30 @@ const Index = () => {
                 className={`group flex flex-col lg:flex-row gap-0 overflow-hidden border border-white/5 hover:border-[#5a8a6e]/30 transition-all duration-500 hover-lift ${i % 2 === 1 ? "lg:flex-row-reverse" : ""}`}
                 style={{ background: "#111810" }}
               >
-                {/* Image */}
-                <div className="lg:w-1/2 h-64 lg:h-auto overflow-hidden relative flex-shrink-0">
-                  <img
-                    src={tour.img}
-                    alt={tour.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className={`absolute inset-0 ${i % 2 === 1 ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-[#111810] via-transparent to-transparent opacity-70`} />
-                  {/* Tour number overlay */}
-                  <div className="absolute top-4 left-4 font-cormorant text-6xl font-light leading-none opacity-30 text-white">
-                    {tour.num}
+                {/* Image block */}
+                <div className="lg:w-1/2 flex-shrink-0 flex flex-col">
+                  <div className="flex-1 h-64 lg:h-72 overflow-hidden relative">
+                    <img
+                      src={tour.img}
+                      alt={tour.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className={`absolute inset-0 ${i % 2 === 1 ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-[#111810] via-transparent to-transparent opacity-70`} />
+                    <div className="absolute top-4 left-4 font-cormorant text-6xl font-light leading-none opacity-30 text-white">
+                      {tour.num}
+                    </div>
+                  </div>
+                  {/* Thumbnail strip */}
+                  <div className="flex gap-0.5">
+                    {tour.gallery.map((thumb, j) => (
+                      <div key={j} className="flex-1 h-16 overflow-hidden">
+                        <img
+                          src={thumb}
+                          alt=""
+                          className="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
 
