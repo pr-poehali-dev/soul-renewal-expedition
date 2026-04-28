@@ -4,6 +4,44 @@ import Icon from "@/components/ui/icon";
 const HERO_IMG = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/6b7e9073-dca0-40c0-8842-8b89fd115646.jpg";
 const ENERGY_IMG = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/cc8026cd-e87c-4bce-9228-ce70d3ac8717.jpg";
 const PANORAMA_IMG = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/33b6b822-bff2-4134-9069-e0e3a9618e50.jpg";
+const LAGONAKI_IMG = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/35de0d94-bc5e-49ef-9987-53f4ed783012.jpg";
+const EAGLE_IMG = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/f7fd7bf8-fa02-4d9d-bce9-34854174c43e.jpg";
+
+const adygheaTours = [
+  {
+    num: "01",
+    name: "Лагонаки",
+    subtitle: "Смотровая на высоте 1744 м",
+    desc: "Очистительный сеанс на вершине плато — сброс старой энергии и наполнение новой. Панорама горных хребтов на 360°.",
+    practice: "Очищение и наполнение",
+    alt: "Высота 1744 м",
+    img: LAGONAKI_IMG,
+    icon: "🏔️",
+    color: "#5a8a6e",
+  },
+  {
+    num: "02",
+    name: "Смотровая над Орлиной полкой",
+    subtitle: "Чистка меридианов",
+    desc: "Точка силы над ущельем — чистка энергетических меридианов и мощное наполнение через горный воздух и пространство.",
+    practice: "Чистка меридианов",
+    alt: "Над ущельем",
+    img: EAGLE_IMG,
+    icon: "🦅",
+    color: "#7a6e3a",
+  },
+  {
+    num: "03",
+    name: "Орлиная полка",
+    subtitle: "Место встречи с орлами",
+    desc: "Легендарная скальная полка — место, где гнездятся орлы и концентрируется энергия свободы. Практика выхода за пределы.",
+    practice: "Энергия свободы",
+    alt: "Скальная полка",
+    img: LAGONAKI_IMG,
+    icon: "🪶",
+    color: "#5a8a6e",
+  },
+];
 
 const places = [
   { name: "Карадаг", desc: "Потухший вулкан с уникальными скальными формациями. Место концентрации древней силы земли.", icon: "🌋", img: HERO_IMG },
@@ -42,7 +80,8 @@ const Index = () => {
   const navItems = [
     { id: "home", label: "Главная" },
     { id: "about", label: "О нас" },
-    { id: "places", label: "Места силы" },
+    { id: "adygea", label: "Адыгея" },
+    { id: "places", label: "Крым" },
     { id: "practices", label: "Практики" },
     { id: "gallery", label: "Галерея" },
     { id: "reviews", label: "Отзывы" },
@@ -162,6 +201,94 @@ const Index = () => {
             <img src={ENERGY_IMG} alt="Место силы" className="w-full h-[500px] object-cover" style={{ clipPath: "polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%)" }} />
             <div className="absolute -bottom-4 -left-4 w-32 h-32 border border-[#4a9db5]/30" />
             <div className="absolute -top-4 -right-4 w-32 h-32 border border-[#c9a96e]/30" />
+          </div>
+        </div>
+      </section>
+
+      {/* ADYGEA */}
+      <section id="adygea" className="py-32 px-6 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #0d1117 0%, #0b130e 50%, #0d1117 100%)" }}>
+        {/* bg mountain silhouette */}
+        <div className="absolute inset-0 opacity-5 pointer-events-none" style={{
+          backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 400'%3E%3Cpath d='M0,400 L0,250 L180,120 L360,200 L540,80 L720,160 L900,40 L1080,140 L1260,100 L1440,180 L1440,400 Z' fill='%235a8a6e'/%3E%3C/svg%3E\")",
+          backgroundSize: "cover",
+          backgroundPosition: "bottom",
+        }} />
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-20">
+            <p className="font-golos text-xs tracking-[0.4em] text-[#5a8a6e] uppercase mb-4">Горная Адыгея</p>
+            <h2 className="font-cormorant text-5xl md:text-7xl font-light text-[#e8ddd0] mb-4 leading-none">
+              Туры в <em className="italic text-[#8ab89a]">Адыгею</em>
+            </h2>
+            <p className="font-golos text-[#9a8f84] max-w-xl mx-auto leading-relaxed mt-6">
+              Горные маршруты с энергетическими практиками на высоте — где кавказский воздух и древние скалы открывают новое измерение силы
+            </p>
+            <div className="w-16 h-px mx-auto mt-8" style={{ background: "linear-gradient(90deg, transparent, #5a8a6e, transparent)" }} />
+          </div>
+
+          {/* Tour cards — stepped layout */}
+          <div className="space-y-8">
+            {adygheaTours.map((tour, i) => (
+              <div
+                key={i}
+                className={`group flex flex-col lg:flex-row gap-0 overflow-hidden border border-white/5 hover:border-[#5a8a6e]/30 transition-all duration-500 hover-lift ${i % 2 === 1 ? "lg:flex-row-reverse" : ""}`}
+                style={{ background: "#111810" }}
+              >
+                {/* Image */}
+                <div className="lg:w-1/2 h-64 lg:h-auto overflow-hidden relative flex-shrink-0">
+                  <img
+                    src={tour.img}
+                    alt={tour.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className={`absolute inset-0 ${i % 2 === 1 ? "bg-gradient-to-l" : "bg-gradient-to-r"} from-[#111810] via-transparent to-transparent opacity-70`} />
+                  {/* Tour number overlay */}
+                  <div className="absolute top-4 left-4 font-cormorant text-6xl font-light leading-none opacity-30 text-white">
+                    {tour.num}
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="lg:w-1/2 p-10 lg:p-14 flex flex-col justify-center">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-3xl">{tour.icon}</span>
+                    <span className="font-golos text-xs tracking-[0.3em] text-[#5a8a6e] uppercase">{tour.practice}</span>
+                  </div>
+                  <h3 className="font-cormorant text-4xl md:text-5xl font-light text-[#e8ddd0] mb-2 leading-tight">
+                    {tour.name}
+                  </h3>
+                  <p className="font-golos text-sm text-[#5a8a6e] mb-6 tracking-wide">{tour.subtitle}</p>
+                  <p className="font-golos text-[#9a8f84] leading-relaxed mb-8 text-sm">{tour.desc}</p>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <Icon name="Mountain" size={14} className="text-[#5a8a6e]" />
+                      <span className="font-golos text-xs text-[#9a8f84]">{tour.alt}</span>
+                    </div>
+                    <div className="w-1 h-1 rounded-full bg-[#5a8a6e]/40" />
+                    <div className="flex items-center gap-2">
+                      <Icon name="Wind" size={14} className="text-[#5a8a6e]" />
+                      <span className="font-golos text-xs text-[#9a8f84]">Горная Адыгея</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth" })}
+                    className="mt-8 self-start px-6 py-2.5 border border-[#5a8a6e]/40 text-[#8ab89a] font-golos text-xs tracking-widest uppercase hover:bg-[#5a8a6e]/10 hover:border-[#5a8a6e] transition-all"
+                  >
+                    Узнать подробнее
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Divider to next section */}
+          <div className="mt-20 text-center">
+            <button
+              onClick={() => document.getElementById("places")?.scrollIntoView({ behavior: "smooth" })}
+              className="font-golos text-xs tracking-[0.3em] text-[#9a8f84]/50 uppercase hover:text-[#9a8f84] transition-colors"
+            >
+              Также смотрите — туры по Крыму ↓
+            </button>
           </div>
         </div>
       </section>
