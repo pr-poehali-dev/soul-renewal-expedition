@@ -98,6 +98,11 @@ const Index = () => {
   const [activeSection, setActiveSection] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [galleryIndex, setGalleryIndex] = useState(0);
+  const [selectedExpedition, setSelectedExpedition] = useState("");
+  const [formName, setFormName] = useState("");
+  const [formPhone, setFormPhone] = useState("");
+  const [formMessage, setFormMessage] = useState("");
+  const [formSent, setFormSent] = useState(false);
 
   const navItems = [
     { id: "home", label: "Главная" },
@@ -515,15 +520,78 @@ const Index = () => {
             ))}
           </div>
           <div className="max-w-2xl mx-auto p-8 bg-[#111820] border border-white/5">
-            <h3 className="font-cormorant text-3xl text-[#e8ddd0] font-light mb-6 text-center">Задать вопрос</h3>
-            <div className="grid md:grid-cols-2 gap-4 mb-4">
-              <input type="text" placeholder="Ваше имя" className="bg-[#0d1117] border border-white/10 text-[#e8ddd0] px-4 py-3 font-golos text-sm placeholder:text-[#9a8f84]/50 focus:outline-none focus:border-[#4a9db5]/50 w-full" />
-              <input type="tel" placeholder="Телефон" className="bg-[#0d1117] border border-white/10 text-[#e8ddd0] px-4 py-3 font-golos text-sm placeholder:text-[#9a8f84]/50 focus:outline-none focus:border-[#4a9db5]/50 w-full" />
-            </div>
-            <textarea rows={4} placeholder="Расскажите о себе и своих ожиданиях от экспедиции..." className="w-full bg-[#0d1117] border border-white/10 text-[#e8ddd0] px-4 py-3 font-golos text-sm placeholder:text-[#9a8f84]/50 focus:outline-none focus:border-[#4a9db5]/50 resize-none mb-4" />
-            <button className="w-full py-4 bg-[#4a9db5] text-[#0d1117] font-golos text-sm tracking-widest uppercase hover:bg-[#5ab0c8] transition-colors font-medium">
-              Отправить заявку
-            </button>
+            <h3 className="font-cormorant text-3xl text-[#e8ddd0] font-light mb-2 text-center">Записаться в экспедицию</h3>
+            <p className="font-golos text-sm text-[#9a8f84] text-center mb-8">Выберите маршрут и оставьте заявку — свяжемся в течение дня</p>
+            {formSent ? (
+              <div className="text-center py-10">
+                <div className="text-4xl mb-4">✓</div>
+                <p className="font-cormorant text-2xl text-[#e8ddd0] font-light mb-2">Заявка отправлена</p>
+                <p className="font-golos text-sm text-[#9a8f84]">Мы свяжемся с вами в течение дня</p>
+              </div>
+            ) : (
+              <>
+                <div className="mb-4">
+                  <select
+                    value={selectedExpedition}
+                    onChange={(e) => setSelectedExpedition(e.target.value)}
+                    className="w-full bg-[#0d1117] border border-white/10 text-[#e8ddd0] px-4 py-3 font-golos text-sm focus:outline-none focus:border-[#4a9db5]/50 appearance-none cursor-pointer"
+                    style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a9db5' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`, backgroundRepeat: "no-repeat", backgroundPosition: "right 16px center" }}
+                  >
+                    <option value="" disabled style={{ color: "#9a8f84" }}>Выберите экспедицию</option>
+                    {expeditions.map((exp, i) => (
+                      <option key={i} value={exp.name} style={{ background: "#0d1117" }}>
+                        {exp.name} — {exp.days} · {exp.price}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {selectedExpedition && (
+                  <div className="mb-4 px-4 py-3 border border-[#4a9db5]/20 bg-[#4a9db5]/5">
+                    {expeditions.filter(e => e.name === selectedExpedition).map(exp => (
+                      <div key={exp.name} className="flex flex-wrap gap-4">
+                        <span className="font-golos text-xs text-[#4a9db5]">📅 Старт: {exp.next}</span>
+                        <span className="font-golos text-xs text-[#4a9db5]">👥 {exp.group}</span>
+                        <span className="font-golos text-xs text-[#4a9db5]">📍 {exp.places}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <div className="grid md:grid-cols-2 gap-4 mb-4">
+                  <input
+                    type="text"
+                    placeholder="Ваше имя"
+                    value={formName}
+                    onChange={(e) => setFormName(e.target.value)}
+                    className="bg-[#0d1117] border border-white/10 text-[#e8ddd0] px-4 py-3 font-golos text-sm placeholder:text-[#9a8f84]/50 focus:outline-none focus:border-[#4a9db5]/50 w-full"
+                  />
+                  <input
+                    type="tel"
+                    placeholder="Телефон"
+                    value={formPhone}
+                    onChange={(e) => setFormPhone(e.target.value)}
+                    className="bg-[#0d1117] border border-white/10 text-[#e8ddd0] px-4 py-3 font-golos text-sm placeholder:text-[#9a8f84]/50 focus:outline-none focus:border-[#4a9db5]/50 w-full"
+                  />
+                </div>
+                <textarea
+                  rows={4}
+                  placeholder="Расскажите о себе и своих ожиданиях от экспедиции..."
+                  value={formMessage}
+                  onChange={(e) => setFormMessage(e.target.value)}
+                  className="w-full bg-[#0d1117] border border-white/10 text-[#e8ddd0] px-4 py-3 font-golos text-sm placeholder:text-[#9a8f84]/50 focus:outline-none focus:border-[#4a9db5]/50 resize-none mb-4"
+                />
+                <button
+                  onClick={() => {
+                    if (formName && formPhone && selectedExpedition) setFormSent(true);
+                  }}
+                  className="w-full py-4 bg-[#4a9db5] text-[#0d1117] font-golos text-sm tracking-widest uppercase hover:bg-[#5ab0c8] transition-colors font-medium disabled:opacity-40"
+                >
+                  Отправить заявку
+                </button>
+                {(!formName || !formPhone || !selectedExpedition) && (
+                  <p className="font-golos text-xs text-[#9a8f84]/60 text-center mt-3">Заполните имя, телефон и выберите экспедицию</p>
+                )}
+              </>
+            )}
           </div>
         </div>
       </section>
