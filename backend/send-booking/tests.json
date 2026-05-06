@@ -1,0 +1,24 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Missing fields",
+      "method": "POST",
+      "path": "/",
+      "body": {"name": "", "phone": "", "expedition": ""},
+      "expectedStatus": 400
+    },
+    {
+      "name": "Valid booking",
+      "method": "POST",
+      "path": "/",
+      "body": {"name": "Тест", "phone": "+79001234567", "expedition": "Экспедиция «Дикий Берег»", "message": "Тестовая заявка"},
+      "expectedStatus": 200
+    }
+  ]
+}

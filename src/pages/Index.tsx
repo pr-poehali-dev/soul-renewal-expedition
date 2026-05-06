@@ -103,6 +103,8 @@ const Index = () => {
   const [formPhone, setFormPhone] = useState("");
   const [formMessage, setFormMessage] = useState("");
   const [formSent, setFormSent] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState("");
 
   const navItems = [
     { id: "home", label: "Главная" },
@@ -580,14 +582,33 @@ const Index = () => {
                   className="w-full bg-[#0d1117] border border-white/10 text-[#e8ddd0] px-4 py-3 font-golos text-sm placeholder:text-[#9a8f84]/50 focus:outline-none focus:border-[#4a9db5]/50 resize-none mb-4"
                 />
                 <button
-                  onClick={() => {
-                    if (formName && formPhone && selectedExpedition) setFormSent(true);
+                  disabled={!formName || !formPhone || !selectedExpedition || formLoading}
+                  onClick={async () => {
+                    setFormLoading(true);
+                    setFormError("");
+                    try {
+                      const res = await fetch("https://functions.poehali.dev/a4e9dd8d-21dc-438a-a766-99a50185d91f", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ name: formName, phone: formPhone, expedition: selectedExpedition, message: formMessage }),
+                      });
+                      if (res.ok) {
+                        setFormSent(true);
+                      } else {
+                        setFormError("Ошибка отправки. Попробуйте позже.");
+                      }
+                    } catch {
+                      setFormError("Ошибка соединения. Попробуйте позже.");
+                    } finally {
+                      setFormLoading(false);
+                    }
                   }}
-                  className="w-full py-4 bg-[#4a9db5] text-[#0d1117] font-golos text-sm tracking-widest uppercase hover:bg-[#5ab0c8] transition-colors font-medium disabled:opacity-40"
+                  className="w-full py-4 bg-[#4a9db5] text-[#0d1117] font-golos text-sm tracking-widest uppercase hover:bg-[#5ab0c8] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Отправить заявку
+                  {formLoading ? "Отправляем..." : "Отправить заявку"}
                 </button>
-                {(!formName || !formPhone || !selectedExpedition) && (
+                {formError && <p className="font-golos text-xs text-red-400 text-center mt-3">{formError}</p>}
+                {(!formName || !formPhone || !selectedExpedition) && !formError && (
                   <p className="font-golos text-xs text-[#9a8f84]/60 text-center mt-3">Заполните имя, телефон и выберите экспедицию</p>
                 )}
               </>
