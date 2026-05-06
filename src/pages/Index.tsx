@@ -17,6 +17,11 @@ const PLACE_MEGANOM = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-
 const PLACE_HRAM = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/0899ce5b-37ab-4f9d-b9be-3c47ea5da31e.jpg";
 const PLACE_FIOLENT = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/8ac1ce0d-d228-457f-b495-ae806a5a152e.jpg";
 const PLACE_MANGUP = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/524dd1a2-8c39-4d13-89f0-5e38c151b9fc.jpg";
+const PLACE_MONASTERY = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/483ebe3b-93ff-40ee-a18e-a3a2c82aaa08.jpg";
+const PLACE_CHURUK = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/0eb77e42-443e-476a-bdda-bf8e10568a3e.jpg";
+const ADYGEA_LAGONAKI = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/56087779-451a-40e3-aae3-1d9dac2e5682.jpg";
+const ADYGEA_ORLINAYA = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/72911bcf-4838-4d48-b066-e2ea3c8862af.jpg";
+const ADYGEA_SMOTROVAYA = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/bb20a24f-b1f7-4977-95a3-bd51e90806af.jpg";
 
 const adygheaTours = [
   {
@@ -62,8 +67,8 @@ const places = [
   { name: "Мыс Меганом", desc: "Сакральный мыс с пересечением мощных энергетических потоков. Место медитаций и ретритов.", icon: "🌊", img: PLACE_MEGANOM },
   { name: "Вершина Ильяс-Кая", desc: "Священная гора с руинами древнего монастыря над морем. Место силы, откуда открывается путь к ясности и духовному обновлению.", icon: "⛪", img: PLACE_ILYAS },
   { name: "Храм Солнца", desc: "Природный амфитеатр из каменных глыб на мысе Фиолент. Древнее место силы, где солнечная энергия заряжает и пробуждает внутренний свет.", icon: "☀️", img: PLACE_HRAM },
-  { name: "Мыс Фиолент", desc: "Скалистый берег с кристальной водой. Место очищения морской стихией.", icon: "💎", img: PLACE_FIOLENT },
-  { name: "Мангуп-Кале", desc: "Пещерный город на вершине горы. Место силы древних цивилизаций Крыма.", icon: "🗺️", img: PLACE_MANGUP },
+  { name: "Свято-Успенский монастырь", desc: "Древний скальный монастырь, высеченный в белой известняковой скале Бахчисарая. Место намоленное веками — тишина здесь особая, живая.", icon: "⛪", img: PLACE_MONASTERY },
+  { name: "Долина реки Чурук-Су", desc: "Таинственный каньон с кристальной рекой у стен Бахчисарая. Место, где вода и камень создают особое пространство для внутреннего погружения.", icon: "🏞️", img: PLACE_CHURUK },
 ];
 
 const practices = [
@@ -78,6 +83,8 @@ const reviews = [
   { name: "Сергей К.", city: "Санкт-Петербург", text: "Три дня на Меганоме — это не отдых, это путешествие внутрь себя. Команда создаёт невероятное пространство безопасности.", stars: 5 },
   { name: "Елена Р.", city: "Екатеринбург", text: "Вершина Ильяс-Кая изменила меня навсегда. Стоишь на краю скалы над морем, а под ногами — тысячи лет истории. Практики там работают на каком-то очень глубоком уровне.", stars: 5 },
   { name: "Дмитрий В.", city: "Краснодар", text: "Храм Солнца на рассвете — это незабываемо. Первые лучи между камнями, тишина, и ощущение, что ты в центре Вселенной. Буду возвращаться снова.", stars: 5 },
+  { name: "Наталья С.", city: "Ростов-на-Дону", text: "Свято-Успенский монастырь — место вне времени. Спустились в скальную церковь, и весь шум внутри просто стих. Такого покоя я не чувствовала никогда.", stars: 5 },
+  { name: "Михаил Т.", city: "Воронеж", text: "Долина Чурук-Су — это магия. Идёшь вдоль реки, скалы нависают над головой, и понимаешь: природа здесь живая. Медитация у воды полностью обнулила меня.", stars: 5 },
 ];
 
 const expeditions = [
@@ -306,6 +313,61 @@ const Index = () => {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Adygea places of power */}
+          <div className="mt-24">
+            <div className="text-center mb-12">
+              <p className="font-golos text-xs tracking-[0.4em] text-[#5a8a6e] uppercase mb-4">Места силы</p>
+              <h3 className="font-cormorant text-4xl md:text-5xl font-light text-[#e8ddd0] mb-4">
+                Священные точки <em className="italic text-[#8ab89a]">Адыгеи</em>
+              </h3>
+              <div className="w-16 h-px mx-auto" style={{ background: "linear-gradient(90deg, transparent, #5a8a6e, transparent)" }} />
+            </div>
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                {
+                  name: "Лагонаки",
+                  subtitle: "Высота 1744 м",
+                  desc: "Высокогорное плато с панорамой кавказских хребтов на 360°. Здесь разряжённый воздух буквально вымывает всё лишнее — практика очищения и глубокого наполнения.",
+                  icon: "🏔️",
+                  img: ADYGEA_LAGONAKI,
+                  practice: "Очищение и наполнение",
+                },
+                {
+                  name: "Смотровая над Орлиной полкой",
+                  subtitle: "Над ущельем",
+                  desc: "Точка силы над глубоким ущельем — место чистки энергетических меридианов. Мощный поток горного воздуха и открытое пространство усиливают любую практику многократно.",
+                  icon: "🦅",
+                  img: ADYGEA_SMOTROVAYA,
+                  practice: "Чистка меридианов",
+                },
+                {
+                  name: "Орлиная полка",
+                  subtitle: "Скальная полка",
+                  desc: "Легендарный карниз над пропастью, где гнездятся орлы. Место концентрации энергии свободы и выхода за пределы — здесь происходят самые глубокие трансформации.",
+                  icon: "🪶",
+                  img: ADYGEA_ORLINAYA,
+                  practice: "Энергия свободы",
+                },
+              ].map((place, i) => (
+                <div key={i} className="group relative overflow-hidden border border-white/5 hover:border-[#5a8a6e]/40 transition-all duration-500" style={{ background: "#0d1510" }}>
+                  <div className="h-52 overflow-hidden relative">
+                    <img src={place.img} alt={place.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0d1510] to-transparent" />
+                    <div className="absolute bottom-3 left-4">
+                      <span className="font-golos text-xs tracking-[0.3em] text-[#5a8a6e] uppercase">{place.practice}</span>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <div className="text-2xl mb-3">{place.icon}</div>
+                    <h4 className="font-cormorant text-2xl text-[#e8ddd0] font-light mb-1">{place.name}</h4>
+                    <p className="font-golos text-xs text-[#5a8a6e] mb-3 tracking-wide">{place.subtitle}</p>
+                    <p className="font-golos text-sm text-[#9a8f84] leading-relaxed">{place.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Divider to next section */}
