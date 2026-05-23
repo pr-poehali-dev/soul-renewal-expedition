@@ -105,7 +105,6 @@ const SectionsBottom = ({
                   className={`px-6 py-2.5 font-golos text-sm tracking-wide transition-all border ${departureCity === city ? "border-[#4a9db5] bg-[#4a9db5]/10 text-[#4a9db5]" : "border-white/10 text-[#9a8f84] hover:border-[#4a9db5]/40 hover:text-[#e8ddd0]"}`}
                 >
                   {city}
-                  {city === "Москва" && <span className="ml-2 text-xs text-[#c9a96e]/70">+5 000 ₽</span>}
                 </button>
               ))}
             </div>
