@@ -51,12 +51,48 @@ const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
             <h2 className="font-cormorant text-5xl md:text-6xl font-light text-[#e8ddd0] mb-8 leading-tight">
               Мы проводники<br /><em className="italic text-[#c9a96e]">между мирами</em>
             </h2>
-            <p className="font-golos text-[#9a8f84] leading-relaxed mb-6 text-base">
-              Более 10 лет мы водим людей по энергетическим местам Крыма. Не просто туристические маршруты — это глубинная работа с пространством и собой.
-            </p>
             <p className="font-golos text-[#9a8f84] leading-relaxed mb-8 text-base">
-              Каждая экспедиция — это путешествие к сути. Мы соединяем практики работы с энергией, осознанное движение в природе и силу крымских мест, которые тысячелетиями притягивали искателей.
+              Мы — проводники между мирами, открывающие двери к тайнам Крыма и Адыгеи. Наши путешествия — это не просто экскурсии, а{" "}
+              <span className="text-[#e8ddd0]">глубокое погружение в энергетику мест силы</span>, где каждый шаг становится шагом к внутренней трансформации.
             </p>
+
+            <p className="font-golos text-xs tracking-[0.3em] text-[#4a9db5] uppercase mb-5">🌌 Почему стоит отправиться с нами?</p>
+
+            <div className="space-y-5 mb-8">
+              <div className="flex gap-4">
+                <div className="w-1 shrink-0 mt-1 rounded-full bg-[#c9a96e]/60" />
+                <div>
+                  <span className="font-golos text-sm text-[#e8ddd0] font-medium">Места силы: </span>
+                  <span className="font-golos text-sm text-[#9a8f84]">исследуйте уникальные локации, где природа и история переплетаются, создавая мощные энергетические потоки. Крым и Адыгея — древние святыни, где вы ощутите связь с чем-то большим.</span>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-1 shrink-0 mt-1 rounded-full bg-[#c9a96e]/60" />
+                <div>
+                  <span className="font-golos text-sm text-[#e8ddd0] font-medium">Трансформация души: </span>
+                  <span className="font-golos text-sm text-[#9a8f84]">практики медитации и осознанности помогут обновить энергетику и найти гармонию внутри себя.</span>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-1 shrink-0 mt-1 rounded-full bg-[#c9a96e]/60" />
+                <div>
+                  <span className="font-golos text-sm text-[#e8ddd0] font-medium">Энергетическое обновление: </span>
+                  <span className="font-golos text-sm text-[#9a8f84]">древние знания и современные методики освобождают от негатива. Вы вернётесь обновлённым, с новыми силами и ясностью мысли.</span>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-1 shrink-0 mt-1 rounded-full bg-[#c9a96e]/60" />
+                <div>
+                  <span className="font-golos text-sm text-[#e8ddd0] font-medium">Сообщество единомышленников: </span>
+                  <span className="font-golos text-sm text-[#9a8f84]">вы становитесь частью дружной семьи, где каждый делится опытом и поддерживает друг друга на пути к самопознанию.</span>
+                </div>
+              </div>
+            </div>
+
+            <p className="font-golos text-sm text-[#8ab89a] italic mb-8">
+              🌿 Откройте мир, где каждый момент наполнен смыслом, а каждое место — возможность для роста и обновления.
+            </p>
+
             <div className="grid grid-cols-3 gap-6 pt-6 border-t border-white/10">
               <div>
                 <div className="font-cormorant text-4xl text-[#c9a96e] font-light">10+</div>
