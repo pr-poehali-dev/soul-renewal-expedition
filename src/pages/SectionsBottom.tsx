@@ -82,6 +82,12 @@ const SectionsBottom = ({
   const isMoscow = departureCity === "Москва";
   const [selectedDate, setSelectedDate] = useState("");
 
+  type ScheduleItem = { time: string; desc: string };
+  type DayBlock = { day: string; subtitle: string; items: ScheduleItem[] };
+  type ExpWithSchedule = (typeof expeditions)[0] & { schedule?: DayBlock[] };
+  const expsTyped = expeditions as ExpWithSchedule[];
+  const [scheduleExp, setScheduleExp] = useState<ExpWithSchedule | null>(null);
+
   const availableDates = useMemo(() => getAvailableDates(isMoscow), [isMoscow]);
 
   return (
@@ -114,7 +120,7 @@ const SectionsBottom = ({
           </div>
 
           <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 mb-16">
-            {expeditions.map((exp, i) => (
+            {expsTyped.map((exp, i) => (
               <div key={i} className="flex flex-col p-7 border border-white/5 bg-[#111820] hover:border-[#4a9db5]/30 transition-all hover-lift">
                 <div className="flex items-center justify-between mb-5">
                   <span className={`font-golos text-xs tracking-widest uppercase px-3 py-1 ${exp.region === "Крым" ? "bg-[#4a9db5]/10 text-[#4a9db5]" : "bg-[#c9a96e]/10 text-[#c9a96e]"}`}>
@@ -145,9 +151,9 @@ const SectionsBottom = ({
                     </div>
                   ))}
                 </div>
-                {'schedule' in exp && exp.schedule && (
+                {exp.schedule && exp.schedule.length > 0 && (
                   <button
-                    onClick={() => setScheduleExp(exp as typeof expeditions[0])}
+                    onClick={() => setScheduleExp(exp)}
                     className="w-full py-2.5 border border-white/10 text-[#9a8f84] font-golos text-xs tracking-widest uppercase hover:border-[#4a9db5]/30 hover:text-[#4a9db5] transition-all mb-3"
                   >
                     Подробная программа
@@ -367,6 +373,51 @@ const SectionsBottom = ({
           </div>
         </div>
       </section>
+
+      {/* SCHEDULE MODAL */}
+      {scheduleExp && scheduleExp.schedule && scheduleExp.schedule.length > 0 && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/70 backdrop-blur-sm" onClick={() => setScheduleExp(null)}>
+          <div className="relative bg-[#0d1117] border border-white/10 w-full max-w-2xl max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+            <div className="flex items-start justify-between p-7 border-b border-white/5">
+              <div>
+                <p className="font-golos text-xs tracking-[0.3em] text-[#4a9db5] uppercase mb-1">Программа экспедиции</p>
+                <h3 className="font-cormorant text-3xl text-[#e8ddd0] font-light">{scheduleExp.name}</h3>
+              </div>
+              <button onClick={() => setScheduleExp(null)} className="text-[#9a8f84] hover:text-[#e8ddd0] transition-colors ml-6 mt-1">
+                <Icon name="X" size={20} />
+              </button>
+            </div>
+            <div className="p-7 space-y-8">
+              {scheduleExp.schedule.map((dayBlock, di) => (
+                <div key={di}>
+                  <div className="flex items-baseline gap-3 mb-5">
+                    <span className="font-golos text-xs tracking-widest text-[#4a9db5] uppercase">{dayBlock.day}</span>
+                    <span className="font-cormorant text-xl text-[#e8ddd0] font-light italic">{dayBlock.subtitle}</span>
+                  </div>
+                  <div className="space-y-4">
+                    {dayBlock.items.map((item, ii) => (
+                      <div key={ii} className="flex gap-5">
+                        <span className="font-golos text-xs text-[#4a9db5] whitespace-nowrap w-24 shrink-0 mt-0.5">{item.time}</span>
+                        <div className="flex-1 border-l border-white/5 pl-5">
+                          <p className="font-golos text-sm text-[#9a8f84] leading-relaxed">{item.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="px-7 pb-7">
+              <button
+                onClick={() => { setScheduleExp(null); setSelectedExpedition(scheduleExp.name); }}
+                className="w-full py-3 bg-[#4a9db5]/10 border border-[#4a9db5]/40 text-[#4a9db5] font-golos text-xs tracking-widest uppercase hover:bg-[#4a9db5]/20 transition-all"
+              >
+                Забронировать эту экспедицию
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* FOOTER */}
       <footer className="border-t border-white/5 py-10 px-6">
