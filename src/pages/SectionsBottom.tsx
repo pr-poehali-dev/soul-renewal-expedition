@@ -1,5 +1,41 @@
+import { useState, useMemo } from "react";
 import Icon from "@/components/ui/icon";
 import { expeditions, PANORAMA_IMG } from "./data";
+
+const BLOCKED_START = new Date(2026, 5, 10); // 10 июня 2026
+const BLOCKED_END = new Date(2026, 5, 25);   // 25 июня 2026
+
+function getAvailableDates(isMoscow: boolean): { date: Date; label: string }[] {
+  const dates: { date: Date; label: string }[] = [];
+  const now = new Date();
+  const start = new Date(now);
+  start.setDate(start.getDate() + 2);
+
+  const months = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+  const days = ["вс", "пн", "вт", "ср", "чт", "пт", "сб"];
+
+  // Генерируем даты на 3 месяца вперёд
+  const end = new Date(now);
+  end.setMonth(end.getMonth() + 3);
+
+  const d = new Date(start);
+  while (d <= end && dates.length < 12) {
+    const dow = d.getDay(); // 0=вс,1=пн,...,4=чт,3=ср
+    const isThursday = dow === 4;
+    const isWednesday = dow === 3;
+
+    const inBlockedRange = d >= BLOCKED_START && d <= BLOCKED_END;
+
+    if (!inBlockedRange && (isThursday || (isMoscow && isWednesday))) {
+      dates.push({
+        date: new Date(d),
+        label: `${d.getDate()} ${months[d.getMonth()]} (${days[d.getDay()]})${isMoscow && isWednesday ? " — Москва" : ""}`,
+      });
+    }
+    d.setDate(d.getDate() + 1);
+  }
+  return dates;
+}
 
 interface SectionsBottomProps {
   selectedExpedition: string;
@@ -29,6 +65,11 @@ const SectionsBottom = ({
   formError, setFormError,
   scrollTo,
 }: SectionsBottomProps) => {
+  const [isMoscow, setIsMoscow] = useState(false);
+  const [selectedDate, setSelectedDate] = useState("");
+
+  const availableDates = useMemo(() => getAvailableDates(isMoscow), [isMoscow]);
+
   return (
     <>
       {/* BOOKING */}
@@ -86,6 +127,41 @@ const SectionsBottom = ({
               </div>
             ) : (
               <>
+                {/* Москва toggle */}
+                <div className="mb-4 flex items-center justify-between px-4 py-3 border border-white/10 bg-[#0d1117]">
+                  <span className="font-golos text-sm text-[#9a8f84]">Еду из Москвы <span className="text-xs text-[#9a8f84]/60">(+1 день, выезд в среду)</span></span>
+                  <button
+                    type="button"
+                    onClick={() => { setIsMoscow(!isMoscow); setSelectedDate(""); }}
+                    className={`w-10 h-5 rounded-full transition-colors relative ${isMoscow ? "bg-[#4a9db5]" : "bg-white/10"}`}
+                  >
+                    <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${isMoscow ? "left-5" : "left-0.5"}`} />
+                  </button>
+                </div>
+
+                {/* Выбор даты */}
+                <div className="mb-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Icon name="Calendar" size={12} className="text-[#4a9db5]" />
+                    <span className="font-golos text-xs text-[#9a8f84] uppercase tracking-wide">Дата выезда</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    {availableDates.map((d, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => setSelectedDate(d.label)}
+                        className={`px-3 py-2 text-left font-golos text-xs transition-all border ${selectedDate === d.label ? "border-[#4a9db5] bg-[#4a9db5]/10 text-[#4a9db5]" : "border-white/10 bg-[#0d1117] text-[#9a8f84] hover:border-[#4a9db5]/40"}`}
+                      >
+                        {d.label}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="font-golos text-xs text-[#9a8f84]/40 mt-2">
+                    ⚠ Период 10–25 июня недоступен для бронирования
+                  </p>
+                </div>
+
                 <div className="mb-4">
                   <select
                     value={selectedExpedition}
@@ -145,7 +221,7 @@ const SectionsBottom = ({
                   className="w-full bg-[#0d1117] border border-white/10 text-[#e8ddd0] px-4 py-3 font-golos text-sm placeholder:text-[#9a8f84]/50 focus:outline-none focus:border-[#4a9db5]/50 resize-none mb-4"
                 />
                 <button
-                  disabled={!formName || !formPhone || !selectedExpedition || formLoading}
+                  disabled={!formName || !formPhone || !selectedExpedition || !selectedDate || formLoading}
                   onClick={async () => {
                     setFormLoading(true);
                     setFormError("");
@@ -153,7 +229,7 @@ const SectionsBottom = ({
                       const res = await fetch("https://functions.poehali.dev/a4e9dd8d-21dc-438a-a766-99a50185d91f", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ name: formName, phone: formPhone, expedition: selectedExpedition, message: formMessage }),
+                        body: JSON.stringify({ name: formName, phone: formPhone, expedition: selectedExpedition, message: formMessage, date: selectedDate, from_moscow: isMoscow }),
                       });
                       if (res.ok) {
                         setFormSent(true);
@@ -171,8 +247,8 @@ const SectionsBottom = ({
                   {formLoading ? "Отправляем..." : "Отправить заявку"}
                 </button>
                 {formError && <p className="font-golos text-xs text-red-400 text-center mt-3">{formError}</p>}
-                {(!formName || !formPhone || !selectedExpedition) && !formError && (
-                  <p className="font-golos text-xs text-[#9a8f84]/60 text-center mt-3">Заполните имя, телефон и выберите экспедицию</p>
+                {(!formName || !formPhone || !selectedExpedition || !selectedDate) && !formError && (
+                  <p className="font-golos text-xs text-[#9a8f84]/60 text-center mt-3">Заполните имя, телефон, выберите экспедицию и дату выезда</p>
                 )}
               </>
             )}

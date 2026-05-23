@@ -28,6 +28,8 @@ def handler(event: dict, context) -> dict:
     phone = body.get('phone', '')
     expedition = body.get('expedition', '')
     message = body.get('message', '')
+    departure_date = body.get('date', '')
+    from_moscow = body.get('from_moscow', False)
 
     if not name or not phone or not expedition:
         return {
@@ -51,8 +53,8 @@ def handler(event: dict, context) -> dict:
             ssl_context=True,
         )
         conn.run(
-            "INSERT INTO clients (name, phone, expedition, message) VALUES (:name, :phone, :expedition, :message)",
-            name=name, phone=phone, expedition=expedition, message=message
+            "INSERT INTO clients (name, phone, expedition, message, departure_date, from_moscow) VALUES (:name, :phone, :expedition, :message, :departure_date, :from_moscow)",
+            name=name, phone=phone, expedition=expedition, message=message, departure_date=departure_date, from_moscow=from_moscow
         )
         conn.close()
     except Exception as e:
@@ -63,11 +65,13 @@ def handler(event: dict, context) -> dict:
         bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
         chat_id = os.environ.get('TELEGRAM_CHAT_ID', '')
         if bot_token and chat_id:
+            moscow_note = " (из Москвы, +1 день)" if from_moscow else ""
             text = (
                 f"🏔 *Новая заявка на экспедицию*\n\n"
                 f"👤 Имя: {name}\n"
                 f"📞 Телефон: {phone}\n"
                 f"🗺 Экспедиция: {expedition}\n"
+                f"📅 Дата выезда: {departure_date or 'не указана'}{moscow_note}\n"
                 f"💬 Сообщение: {message or 'не указано'}"
             )
             tg_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
@@ -100,6 +104,7 @@ def handler(event: dict, context) -> dict:
                 <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; width: 140px;">Имя</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{name}</td></tr>
                 <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Телефон</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{phone}</td></tr>
                 <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Экспедиция</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{expedition}</td></tr>
+                <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Дата выезда</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{departure_date or 'не указана'}{'  (из Москвы, +1 день)' if from_moscow else ''}</td></tr>
                 <tr><td style="padding: 8px; font-weight: bold;">Сообщение</td><td style="padding: 8px;">{message or 'не указано'}</td></tr>
               </table>
             </body></html>
