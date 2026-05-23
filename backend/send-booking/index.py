@@ -5,6 +5,7 @@ import urllib.request
 import urllib.parse
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import pg8000.native
 
 
 def handler(event: dict, context) -> dict:
@@ -36,6 +37,26 @@ def handler(event: dict, context) -> dict:
         }
 
     errors = []
+
+    # --- Сохранение в БД ---
+    try:
+        import urllib.parse as urlparse
+        db_url = urlparse.urlparse(os.environ['DATABASE_URL'])
+        conn = pg8000.native.Connection(
+            host=db_url.hostname,
+            port=db_url.port or 5432,
+            database=db_url.path.lstrip('/'),
+            user=db_url.username,
+            password=db_url.password,
+            ssl_context=True,
+        )
+        conn.run(
+            "INSERT INTO clients (name, phone, expedition, message) VALUES (:name, :phone, :expedition, :message)",
+            name=name, phone=phone, expedition=expedition, message=message
+        )
+        conn.close()
+    except Exception as e:
+        errors.append(f'DB: {str(e)}')
 
     # --- Telegram ---
     try:
