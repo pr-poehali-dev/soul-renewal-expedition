@@ -217,16 +217,25 @@ const SectionsBottom = ({
                 </div>
               </div>
             </div>
-            <div className="flex gap-4 mt-10">
-              <a href="#" className="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[#4a9db5]/40 transition-colors text-[#9a8f84] hover:text-[#4a9db5]">
-                <Icon name="MessageCircle" size={16} />
-              </a>
-              <a href="#" className="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[#4a9db5]/40 transition-colors text-[#9a8f84] hover:text-[#4a9db5]">
-                <Icon name="Instagram" size={16} />
-              </a>
-              <a href="#" className="w-10 h-10 border border-white/10 flex items-center justify-center hover:border-[#4a9db5]/40 transition-colors text-[#9a8f84] hover:text-[#4a9db5]">
-                <Icon name="Youtube" size={16} />
-              </a>
+            <div className="mt-10">
+              <div className="font-golos text-xs text-[#9a8f84] mb-3 tracking-wide uppercase">Написать нам</div>
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2">
+                  <span className="font-golos text-xs text-[#9a8f84]/60 w-36">+7 925 777-15-55</span>
+                  <a href="https://t.me/+79257771555" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 border border-[#4a9db5]/30 text-[#4a9db5] hover:bg-[#4a9db5]/10 transition-colors font-golos text-xs">
+                    <Icon name="Send" size={12} /> Telegram
+                  </a>
+                  <a href="https://wa.me/79257771555" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 border border-[#5a8a6e]/30 text-[#8ab89a] hover:bg-[#5a8a6e]/10 transition-colors font-golos text-xs">
+                    <Icon name="MessageCircle" size={12} /> WhatsApp
+                  </a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-golos text-xs text-[#9a8f84]/60 w-36">+7 900 138-03-45</span>
+                  <a href="https://t.me/+79001380345" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 border border-[#4a9db5]/30 text-[#4a9db5] hover:bg-[#4a9db5]/10 transition-colors font-golos text-xs">
+                    <Icon name="Send" size={12} /> Telegram
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div className="relative h-80 lg:h-[450px]">
