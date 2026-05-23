@@ -49,7 +49,7 @@ const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
           <div>
             <p className="font-golos text-xs tracking-[0.4em] text-[#4a9db5] uppercase mb-4">О нас</p>
             <h2 className="font-cormorant text-5xl md:text-6xl font-light text-[#e8ddd0] mb-8 leading-tight">
-              Мы проводники<br /><em className="italic text-[#c9a96e]">между мирами</em>
+              Почему важно побывать<br /><em className="italic text-[#c9a96e]">в местах силы?</em>
             </h2>
             <p className="font-golos text-[#9a8f84] leading-relaxed mb-8 text-base">
               Мы — проводники между мирами, открывающие двери к тайнам Крыма и Адыгеи. Наши путешествия — это не просто экскурсии, а{" "}
