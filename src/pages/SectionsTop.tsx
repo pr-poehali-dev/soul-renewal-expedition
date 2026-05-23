@@ -24,7 +24,7 @@ const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
         <div className="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-in">
           <p className="font-golos text-xs tracking-[0.4em] text-[#4a9db5] uppercase mb-6">Экспедиции по местам силы</p>
           <h1 className="font-cormorant text-6xl md:text-8xl font-light text-[#e8ddd0] leading-none mb-6">
-            Крым.<br /><em className="italic text-[#c9a96e]">Живая земля.</em>
+            Крым и Адыгея.<br /><em className="italic text-[#c9a96e]">Живая земля.</em>
           </h1>
           <p className="font-golos text-lg text-[#9a8f84] max-w-xl mx-auto mb-10 leading-relaxed">
             Путешествия к энергетическим сердцам Крыма и Адыгеи — скалам, морю и горам, которые меняют людей
