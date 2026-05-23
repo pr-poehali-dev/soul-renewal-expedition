@@ -187,31 +187,33 @@ const SectionsBottom = ({
             <p className="font-golos text-xs tracking-[0.4em] text-[#4a9db5] uppercase mb-4">Связь</p>
             <h2 className="font-cormorant text-5xl font-light text-[#e8ddd0] mb-8"><em className="italic text-[#c9a96e]">Контакты</em></h2>
             <div className="space-y-6">
-              <a href="tel:+79001234567" className="flex items-center gap-4 group">
-                <div className="w-12 h-12 bg-[#4a9db5]/10 border border-[#4a9db5]/20 flex items-center justify-center group-hover:bg-[#4a9db5]/20 transition-colors">
+              <div className="flex items-start gap-4 group">
+                <div className="w-12 h-12 bg-[#4a9db5]/10 border border-[#4a9db5]/20 flex items-center justify-center group-hover:bg-[#4a9db5]/20 transition-colors shrink-0">
                   <Icon name="Phone" size={18} className="text-[#4a9db5]" />
                 </div>
                 <div>
                   <div className="font-golos text-xs text-[#9a8f84] mb-1 tracking-wide">Телефон</div>
-                  <div className="font-cormorant text-xl text-[#e8ddd0]">+7 900 123-45-67</div>
+                  <a href="tel:+79257771555" className="block font-cormorant text-xl text-[#e8ddd0] hover:text-[#4a9db5] transition-colors">+7 925 777-15-55</a>
+                  <a href="tel:+79001380345" className="block font-cormorant text-xl text-[#e8ddd0] hover:text-[#4a9db5] transition-colors">+7 900 138-03-45</a>
                 </div>
-              </a>
-              <a href="mailto:info@crimea-power.ru" className="flex items-center gap-4 group">
+              </div>
+              <a href="mailto:a5144500@inbox.ru" className="flex items-center gap-4 group">
                 <div className="w-12 h-12 bg-[#4a9db5]/10 border border-[#4a9db5]/20 flex items-center justify-center group-hover:bg-[#4a9db5]/20 transition-colors">
                   <Icon name="Mail" size={18} className="text-[#4a9db5]" />
                 </div>
                 <div>
                   <div className="font-golos text-xs text-[#9a8f84] mb-1 tracking-wide">Email</div>
-                  <div className="font-cormorant text-xl text-[#e8ddd0]">info@crimea-power.ru</div>
+                  <div className="font-cormorant text-xl text-[#e8ddd0]">a5144500@inbox.ru</div>
                 </div>
               </a>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-[#4a9db5]/10 border border-[#4a9db5]/20 flex items-center justify-center">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-[#4a9db5]/10 border border-[#4a9db5]/20 flex items-center justify-center shrink-0 mt-0.5">
                   <Icon name="MapPin" size={18} className="text-[#4a9db5]" />
                 </div>
                 <div>
                   <div className="font-golos text-xs text-[#9a8f84] mb-1 tracking-wide">Сбор групп</div>
-                  <div className="font-cormorant text-xl text-[#e8ddd0]">Симферополь, Крым</div>
+                  <div className="font-cormorant text-xl text-[#e8ddd0]">Ростов-на-Дону, Москва, Краснодар</div>
+                  <div className="font-golos text-xs text-[#9a8f84]/70 mt-1">Для участников из Москвы +1 день к любой экспедиции</div>
                 </div>
               </div>
             </div>
