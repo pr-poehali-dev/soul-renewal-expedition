@@ -1,4 +1,6 @@
+import { useState } from "react";
 import Icon from "@/components/ui/icon";
+import Lightbox from "@/components/ui/Lightbox";
 import { HERO_IMG, ENERGY_IMG, adygheaTours, adygeaPlaces } from "./data";
 
 interface SectionsTopProps {
@@ -6,6 +8,13 @@ interface SectionsTopProps {
 }
 
 const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
+  const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
+
+  const openLightbox = (images: string[], index = 0) => setLightbox({ images, index });
+  const closeLightbox = () => setLightbox(null);
+  const prevImage = () => lightbox && setLightbox({ ...lightbox, index: (lightbox.index - 1 + lightbox.images.length) % lightbox.images.length });
+  const nextImage = () => lightbox && setLightbox({ ...lightbox, index: (lightbox.index + 1) % lightbox.images.length });
+
   return (
     <>
       {/* HERO */}
@@ -101,7 +110,7 @@ const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
               >
                 {/* Image block */}
                 <div className="lg:w-1/2 flex-shrink-0 flex flex-col">
-                  <div className="flex-1 h-64 lg:h-72 overflow-hidden relative">
+                  <div className="flex-1 h-64 lg:h-72 overflow-hidden relative cursor-zoom-in" onClick={() => openLightbox(tour.gallery, 0)}>
                     <img
                       src={tour.img}
                       alt={tour.name}
@@ -111,15 +120,18 @@ const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
                     <div className="absolute top-4 left-4 font-cormorant text-6xl font-light leading-none opacity-30 text-white">
                       {tour.num}
                     </div>
+                    <div className="absolute bottom-3 right-3 bg-black/40 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Icon name="ZoomIn" size={14} className="text-white" />
+                    </div>
                   </div>
                   {/* Thumbnail strip */}
                   <div className="flex gap-0.5">
                     {tour.gallery.map((thumb, j) => (
-                      <div key={j} className="flex-1 h-16 overflow-hidden">
+                      <div key={j} className="flex-1 h-16 overflow-hidden cursor-zoom-in" onClick={() => openLightbox(tour.gallery, j)}>
                         <img
                           src={thumb}
                           alt=""
-                          className="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                          className="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                     ))}
@@ -171,11 +183,14 @@ const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
             <div className="grid md:grid-cols-3 gap-6">
               {adygeaPlaces.map((place, i) => (
                 <div key={i} className="group relative overflow-hidden border border-white/5 hover:border-[#5a8a6e]/40 transition-all duration-500" style={{ background: "#0d1510" }}>
-                  <div className="h-52 overflow-hidden relative">
+                  <div className="h-52 overflow-hidden relative cursor-zoom-in" onClick={() => openLightbox([place.img])}>
                     <img src={place.img} alt={place.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0d1510] to-transparent" />
                     <div className="absolute bottom-3 left-4">
                       <span className="font-golos text-xs tracking-[0.3em] text-[#5a8a6e] uppercase">{place.practice}</span>
+                    </div>
+                    <div className="absolute top-3 right-3 bg-black/40 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Icon name="ZoomIn" size={14} className="text-white" />
                     </div>
                   </div>
                   <div className="p-6">
@@ -200,6 +215,15 @@ const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
           </div>
         </div>
       </section>
+      {lightbox && (
+        <Lightbox
+          images={lightbox.images}
+          index={lightbox.index}
+          onClose={closeLightbox}
+          onPrev={prevImage}
+          onNext={nextImage}
+        />
+      )}
     </>
   );
 };
