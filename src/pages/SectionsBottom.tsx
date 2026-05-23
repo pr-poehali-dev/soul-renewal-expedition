@@ -159,6 +159,10 @@ const SectionsBottom = ({
                     Подробная программа
                   </button>
                 )}
+                <div className="flex items-center gap-2 mb-3 px-1">
+                  <Icon name="CreditCard" size={12} className="text-[#5a8a6e] shrink-0" />
+                  <span className="font-golos text-[11px] text-[#9a8f84]/70">Наличными или СБП</span>
+                </div>
                 <button
                   onClick={() => setSelectedExpedition(exp.name)}
                   className="w-full py-3 border border-[#4a9db5]/40 text-[#4a9db5] font-golos text-xs tracking-widest uppercase hover:bg-[#4a9db5]/10 transition-all mt-auto"
