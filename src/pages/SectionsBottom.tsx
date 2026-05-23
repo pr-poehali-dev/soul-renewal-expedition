@@ -145,6 +145,14 @@ const SectionsBottom = ({
                     </div>
                   ))}
                 </div>
+                {'schedule' in exp && exp.schedule && (
+                  <button
+                    onClick={() => setScheduleExp(exp as typeof expeditions[0])}
+                    className="w-full py-2.5 border border-white/10 text-[#9a8f84] font-golos text-xs tracking-widest uppercase hover:border-[#4a9db5]/30 hover:text-[#4a9db5] transition-all mb-3"
+                  >
+                    Подробная программа
+                  </button>
+                )}
                 <button
                   onClick={() => setSelectedExpedition(exp.name)}
                   className="w-full py-3 border border-[#4a9db5]/40 text-[#4a9db5] font-golos text-xs tracking-widest uppercase hover:bg-[#4a9db5]/10 transition-all mt-auto"
