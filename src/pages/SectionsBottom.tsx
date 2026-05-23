@@ -37,6 +37,17 @@ function getAvailableDates(isMoscow: boolean): { date: Date; label: string }[] {
   return dates;
 }
 
+const CITIES = ["Ростов-на-Дону", "Краснодар", "Москва"];
+
+function getPrice(basePrice: string, city: string | null): string {
+  if (!city) return "";
+  if (city === "Москва" && basePrice !== "уточняется") {
+    const num = parseInt(basePrice.replace(/\D/g, ""), 10);
+    return `${(num + 5000).toLocaleString("ru-RU")} ₽`;
+  }
+  return basePrice;
+}
+
 interface SectionsBottomProps {
   selectedExpedition: string;
   setSelectedExpedition: (v: string) => void;
@@ -52,6 +63,8 @@ interface SectionsBottomProps {
   setFormLoading: (v: boolean) => void;
   formError: string;
   setFormError: (v: string) => void;
+  departureCity: string | null;
+  setDepartureCity: (v: string) => void;
   scrollTo: (id: string) => void;
 }
 
@@ -63,9 +76,10 @@ const SectionsBottom = ({
   formSent, setFormSent,
   formLoading, setFormLoading,
   formError, setFormError,
+  departureCity, setDepartureCity,
   scrollTo,
 }: SectionsBottomProps) => {
-  const [isMoscow, setIsMoscow] = useState(false);
+  const isMoscow = departureCity === "Москва";
   const [selectedDate, setSelectedDate] = useState("");
 
   const availableDates = useMemo(() => getAvailableDates(isMoscow), [isMoscow]);
@@ -80,6 +94,26 @@ const SectionsBottom = ({
             <h2 className="font-cormorant text-5xl md:text-6xl font-light text-[#e8ddd0] mb-4"><em className="italic text-[#c9a96e]">Бронирование</em></h2>
             <div className="section-divider mt-6" />
           </div>
+          {/* City selector */}
+          <div className="mb-12">
+            <p className="font-golos text-xs tracking-[0.3em] text-[#9a8f84] uppercase text-center mb-5">Выберите город выезда</p>
+            <div className="flex flex-wrap justify-center gap-3">
+              {CITIES.map((city) => (
+                <button
+                  key={city}
+                  onClick={() => { setDepartureCity(city); setSelectedDate(""); }}
+                  className={`px-6 py-2.5 font-golos text-sm tracking-wide transition-all border ${departureCity === city ? "border-[#4a9db5] bg-[#4a9db5]/10 text-[#4a9db5]" : "border-white/10 text-[#9a8f84] hover:border-[#4a9db5]/40 hover:text-[#e8ddd0]"}`}
+                >
+                  {city}
+                  {city === "Москва" && <span className="ml-2 text-xs text-[#c9a96e]/70">+5 000 ₽</span>}
+                </button>
+              ))}
+            </div>
+            {!departureCity && (
+              <p className="font-golos text-xs text-[#9a8f84]/50 text-center mt-4">Выберите город, чтобы увидеть стоимость экспедиций</p>
+            )}
+          </div>
+
           <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 mb-16">
             {expeditions.map((exp, i) => (
               <div key={i} className="flex flex-col p-7 border border-white/5 bg-[#111820] hover:border-[#4a9db5]/30 transition-all hover-lift">
@@ -90,8 +124,13 @@ const SectionsBottom = ({
                   <span className="font-golos text-xs text-[#9a8f84]">{exp.days}</span>
                 </div>
                 <h3 className="font-cormorant text-2xl text-[#e8ddd0] font-light mb-1">{exp.name}</h3>
-                {exp.price !== "уточняется" && (
-                  <div className="font-cormorant text-3xl text-[#c9a96e] font-light mb-3">{exp.price}</div>
+                {departureCity && exp.price !== "уточняется" && (
+                  <div className="font-cormorant text-3xl text-[#c9a96e] font-light mb-3">
+                    {getPrice(exp.price, departureCity)}
+                  </div>
+                )}
+                {!departureCity && (
+                  <div className="font-golos text-xs text-[#9a8f84]/50 mb-3 italic">выберите город для цены</div>
                 )}
                 <div className="flex items-center gap-2 mb-5">
                   <Icon name="MapPin" size={12} className="text-[#4a9db5] shrink-0" />
@@ -127,16 +166,17 @@ const SectionsBottom = ({
               </div>
             ) : (
               <>
-                {/* Москва toggle */}
-                <div className="mb-4 flex items-center justify-between px-4 py-3 border border-white/10 bg-[#0d1117]">
-                  <span className="font-golos text-sm text-[#9a8f84]">Еду из Москвы <span className="text-xs text-[#9a8f84]/60">(+1 день, выезд в среду)</span></span>
-                  <button
-                    type="button"
-                    onClick={() => { setIsMoscow(!isMoscow); setSelectedDate(""); }}
-                    className={`w-10 h-5 rounded-full transition-colors relative ${isMoscow ? "bg-[#4a9db5]" : "bg-white/10"}`}
-                  >
-                    <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${isMoscow ? "left-5" : "left-0.5"}`} />
-                  </button>
+                {/* Город из шапки */}
+                <div className="mb-4 flex items-center gap-3 px-4 py-3 border border-white/10 bg-[#0d1117]">
+                  <Icon name="MapPin" size={14} className="text-[#4a9db5] shrink-0" />
+                  {departureCity ? (
+                    <span className="font-golos text-sm text-[#e8ddd0]">
+                      Выезд из: <span className="text-[#4a9db5]">{departureCity}</span>
+                      {isMoscow && <span className="text-xs text-[#9a8f84] ml-2">(выезд в среду, +1 день)</span>}
+                    </span>
+                  ) : (
+                    <span className="font-golos text-sm text-[#9a8f84]">Выберите город выезда выше ↑</span>
+                  )}
                 </div>
 
                 {/* Выбор даты */}
@@ -229,7 +269,7 @@ const SectionsBottom = ({
                       const res = await fetch("https://functions.poehali.dev/a4e9dd8d-21dc-438a-a766-99a50185d91f", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ name: formName, phone: formPhone, expedition: selectedExpedition, message: formMessage, date: selectedDate, from_moscow: isMoscow }),
+                        body: JSON.stringify({ name: formName, phone: formPhone, expedition: selectedExpedition, message: formMessage, date: selectedDate, from_moscow: isMoscow, city: departureCity }),
                       });
                       if (res.ok) {
                         setFormSent(true);

@@ -27,6 +27,7 @@ const Index = () => {
   const [formSent, setFormSent] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
   const [formError, setFormError] = useState("");
+  const [departureCity, setDepartureCity] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -89,6 +90,7 @@ const Index = () => {
         formSent={formSent} setFormSent={setFormSent}
         formLoading={formLoading} setFormLoading={setFormLoading}
         formError={formError} setFormError={setFormError}
+        departureCity={departureCity} setDepartureCity={setDepartureCity}
         scrollTo={scrollTo}
       />
     </div>
