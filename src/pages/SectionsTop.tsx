@@ -51,9 +51,26 @@ const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
             <h2 className="font-cormorant text-5xl md:text-6xl font-light text-[#e8ddd0] mb-8 leading-tight">
               Почему важно побывать<br /><em className="italic text-[#c9a96e]">в местах силы?</em>
             </h2>
+            <p className="font-golos text-[#9a8f84] leading-relaxed mb-5 text-base">
+              Места силы — это особые точки на планете, где концентрируется мощная энергия. Люди издревле стремились сюда, чтобы:
+            </p>
+            <ul className="mb-5 space-y-1">
+              {["восстановить жизненные силы", "получить вдохновение", "расширить сознание", "найти гармонию", "ощутить связь с природой и Вселенной"].map((item, i) => (
+                <li key={i} className="flex items-start gap-2 font-golos text-sm text-[#9a8f84]">
+                  <span className="text-[#4a9db5] mt-0.5">—</span> {item}
+                </li>
+              ))}
+            </ul>
+            <p className="font-golos text-[#9a8f84] leading-relaxed mb-4 text-base">В таких местах можно:</p>
+            <ul className="mb-6 space-y-1">
+              {["медитировать", "загадывать желания", "работать с внутренними запросами", "проводить ритуалы", "настраиваться на глубокие размышления"].map((item, i) => (
+                <li key={i} className="flex items-start gap-2 font-golos text-sm text-[#9a8f84]">
+                  <span className="text-[#c9a96e] mt-0.5">—</span> {item}
+                </li>
+              ))}
+            </ul>
             <p className="font-golos text-[#9a8f84] leading-relaxed mb-8 text-base">
-              Мы — проводники между мирами, открывающие двери к тайнам Крыма и Адыгеи. Наши путешествия — это не просто экскурсии, а{" "}
-              <span className="text-[#e8ddd0]">глубокое погружение в энергетику мест силы</span>, где каждый шаг становится шагом к внутренней трансформации.
+              Посещение места силы способствует <span className="text-[#e8ddd0]">внутренней трансформации</span>, помогает избавиться от блоков, получить озарения и улучшить здоровье. Многие отмечают, что после таких поездок жизнь начинает меняться: появляются новые возможности, уходят страхи, реализуются мечты.
             </p>
 
             <p className="font-golos text-xs tracking-[0.3em] text-[#4a9db5] uppercase mb-5">🌌 Почему стоит отправиться с нами?</p>
