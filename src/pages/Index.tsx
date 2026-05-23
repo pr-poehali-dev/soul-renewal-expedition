@@ -88,10 +88,60 @@ const reviews = [
 ];
 
 const expeditions = [
-  { name: "Экспедиция «Дикий Берег»", days: "5 дней", price: "от 45 000 ₽", places: "Меганом, Храм Солнца, Долина Приведений", group: "до 8 человек", next: "12 мая 2026" },
-  { name: "Экспедиция «Горные Духи»", days: "7 дней", price: "от 62 000 ₽", places: "Ильяс-Кая, Успенский монастырь, Чурук-Су", group: "до 6 человек", next: "3 июня 2026" },
-  { name: "Экспедиция «Полное Погружение»", days: "10 дней", price: "от 89 000 ₽", places: "Все 6 мест силы Крыма + 3 точки Адыгеи", group: "до 5 человек", next: "18 июля 2026" },
-  { name: "Экспедиция «Кавказская Сила»", days: "4 дня", price: "от 38 000 ₽", places: "Лагонаки, Орлиная полка, Смотровая над ущельем", group: "до 8 человек", next: "29 мая 2026" },
+  {
+    region: "Крым",
+    name: "Крым · 2 дня",
+    days: "2 дня",
+    price: "уточняется",
+    places: "Мыс Меганом, Маяк Св. Николая, Долина Приведений",
+    group: "мини-группа",
+    next: "уточняется",
+    program: [
+      "День 1: Мыс Меганом 6:00 — маяк, спуск к морю, очистительный сеанс. Обед — Храм-маяк Святителя Николая. Долина Приведений — энергосеанс на гармонию",
+      "День 2: Храм Солнца — работа с чакрами и меридианами. Восхождение на Ильяс-Кая — сеанс на повышение частотности и оздоровление",
+    ],
+  },
+  {
+    region: "Крым",
+    name: "Крым · 3 дня",
+    days: "3 дня",
+    price: "уточняется",
+    places: "Меганом, Долина Приведений, Храм Солнца, Ильяс-Кая + бонус",
+    group: "мини-группа",
+    next: "уточняется",
+    program: [
+      "День 1: Мыс Меганом — маяк, море, очистительный энергосеанс. Храм-маяк Святителя Николая",
+      "День 2: Долина Приведений — энергосеанс на наполнение и гармонию",
+      "День 3: Храм Солнца — чакры, меридианы, центральный канал. Вершина Ильяс-Кая — сеанс на оздоровление",
+    ],
+  },
+  {
+    region: "Адыгея",
+    name: "Адыгея · 2 дня",
+    days: "2 дня",
+    price: "уточняется",
+    places: "Плато Лагонаки, водопады, места силы Кавказа",
+    group: "мини-группа",
+    next: "уточняется",
+    program: [
+      "День 1: Прибытие, заселение. Вечерний ритуал знакомства с энергией Кавказа",
+      "День 2: Плато Лагонаки — энергосеанс в сердце гор. Водопады, практики на открытие и наполнение",
+    ],
+  },
+  {
+    region: "Адыгея",
+    name: "Адыгея · 3 дня",
+    days: "3 дня",
+    price: "уточняется",
+    places: "Лагонаки, Орлиная полка, ущелья, водопады Кавказа",
+    group: "мини-группа",
+    next: "уточняется",
+    program: [
+      "День 1: Прибытие, вечерний ритуал знакомства с энергией Кавказа",
+      "День 2: Плато Лагонаки — энергосеанс. Водопады — практики на открытие",
+      "День 3: Орлиная полка — работа с пространством и собой. Финальный сеанс на интеграцию",
+    ],
+  },
 ];
 
 const Index = () => {
@@ -503,19 +553,34 @@ const Index = () => {
             <h2 className="font-cormorant text-5xl md:text-6xl font-light text-[#e8ddd0] mb-4"><em className="italic text-[#c9a96e]">Бронирование</em></h2>
             <div className="section-divider mt-6" />
           </div>
-          <div className="grid lg:grid-cols-3 gap-6 mb-16">
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 mb-16">
             {expeditions.map((exp, i) => (
-              <div key={i} className={`p-8 border transition-all hover-lift ${i === 1 ? "border-[#4a9db5]/50 bg-[#4a9db5]/5" : "border-white/5 bg-[#111820] hover:border-[#4a9db5]/20"}`}>
-                {i === 1 && <div className="font-golos text-xs tracking-widest text-[#4a9db5] uppercase mb-4">Популярное</div>}
-                <h3 className="font-cormorant text-2xl text-[#e8ddd0] font-light mb-2">{exp.name}</h3>
-                <div className="font-cormorant text-4xl text-[#c9a96e] font-light mb-6">{exp.price}</div>
-                <div className="space-y-3 mb-8">
-                  <div className="flex items-center gap-3"><Icon name="Calendar" size={14} className="text-[#4a9db5]" /><span className="font-golos text-sm text-[#9a8f84]">{exp.days}</span></div>
-                  <div className="flex items-center gap-3"><Icon name="MapPin" size={14} className="text-[#4a9db5]" /><span className="font-golos text-sm text-[#9a8f84]">{exp.places}</span></div>
-                  <div className="flex items-center gap-3"><Icon name="Users" size={14} className="text-[#4a9db5]" /><span className="font-golos text-sm text-[#9a8f84]">{exp.group}</span></div>
-                  <div className="flex items-center gap-3"><Icon name="Clock" size={14} className="text-[#4a9db5]" /><span className="font-golos text-sm text-[#9a8f84]">Старт: {exp.next}</span></div>
+              <div key={i} className="flex flex-col p-7 border border-white/5 bg-[#111820] hover:border-[#4a9db5]/30 transition-all hover-lift">
+                <div className="flex items-center justify-between mb-5">
+                  <span className={`font-golos text-xs tracking-widest uppercase px-3 py-1 ${exp.region === "Крым" ? "bg-[#4a9db5]/10 text-[#4a9db5]" : "bg-[#c9a96e]/10 text-[#c9a96e]"}`}>
+                    {exp.region}
+                  </span>
+                  <span className="font-golos text-xs text-[#9a8f84]">{exp.days}</span>
                 </div>
-                <button className={`w-full py-3 font-golos text-sm tracking-widest uppercase transition-all ${i === 1 ? "bg-[#4a9db5] text-[#0d1117] hover:bg-[#5ab0c8] font-medium" : "border border-[#4a9db5]/40 text-[#4a9db5] hover:bg-[#4a9db5]/10"}`}>
+                <h3 className="font-cormorant text-2xl text-[#e8ddd0] font-light mb-1">{exp.name}</h3>
+                <div className="flex items-center gap-2 mb-5">
+                  <Icon name="MapPin" size={12} className="text-[#4a9db5] shrink-0" />
+                  <span className="font-golos text-xs text-[#9a8f84] leading-relaxed">{exp.places}</span>
+                </div>
+                <div className="space-y-3 mb-6 flex-1">
+                  {exp.program.map((day, d) => (
+                    <div key={d} className="flex gap-3">
+                      <div className="w-5 h-5 rounded-full bg-[#4a9db5]/15 border border-[#4a9db5]/30 flex items-center justify-center shrink-0 mt-0.5">
+                        <span className="font-golos text-[10px] text-[#4a9db5]">{d + 1}</span>
+                      </div>
+                      <p className="font-golos text-xs text-[#9a8f84] leading-relaxed">{day}</p>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={() => setSelectedExpedition(exp.name)}
+                  className="w-full py-3 border border-[#4a9db5]/40 text-[#4a9db5] font-golos text-xs tracking-widest uppercase hover:bg-[#4a9db5]/10 transition-all mt-auto"
+                >
                   Забронировать
                 </button>
               </div>
@@ -540,11 +605,20 @@ const Index = () => {
                     style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a9db5' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`, backgroundRepeat: "no-repeat", backgroundPosition: "right 16px center" }}
                   >
                     <option value="" disabled style={{ color: "#9a8f84" }}>Выберите экспедицию</option>
-                    {expeditions.map((exp, i) => (
-                      <option key={i} value={exp.name} style={{ background: "#0d1117" }}>
-                        {exp.name} — {exp.days} · {exp.price}
-                      </option>
-                    ))}
+                    <optgroup label="── Крым ──" style={{ color: "#4a9db5", background: "#0d1117" }}>
+                      {expeditions.filter(e => e.region === "Крым").map((exp, i) => (
+                        <option key={i} value={exp.name} style={{ background: "#0d1117", color: "#e8ddd0" }}>
+                          {exp.name} — {exp.days}
+                        </option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="── Адыгея ──" style={{ color: "#c9a96e", background: "#0d1117" }}>
+                      {expeditions.filter(e => e.region === "Адыгея").map((exp, i) => (
+                        <option key={i} value={exp.name} style={{ background: "#0d1117", color: "#e8ddd0" }}>
+                          {exp.name} — {exp.days}
+                        </option>
+                      ))}
+                    </optgroup>
                   </select>
                 </div>
                 {selectedExpedition && (
