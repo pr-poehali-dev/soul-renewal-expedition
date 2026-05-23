@@ -49,6 +49,9 @@ const SectionsBottom = ({
                   <span className="font-golos text-xs text-[#9a8f84]">{exp.days}</span>
                 </div>
                 <h3 className="font-cormorant text-2xl text-[#e8ddd0] font-light mb-1">{exp.name}</h3>
+                {exp.price !== "уточняется" && (
+                  <div className="font-cormorant text-3xl text-[#c9a96e] font-light mb-3">{exp.price}</div>
+                )}
                 <div className="flex items-center gap-2 mb-5">
                   <Icon name="MapPin" size={12} className="text-[#4a9db5] shrink-0" />
                   <span className="font-golos text-xs text-[#9a8f84] leading-relaxed">{exp.places}</span>
