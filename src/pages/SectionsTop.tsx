@@ -27,7 +27,7 @@ const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
             Крым.<br /><em className="italic text-[#c9a96e]">Живая земля.</em>
           </h1>
           <p className="font-golos text-lg text-[#9a8f84] max-w-xl mx-auto mb-10 leading-relaxed">
-            Путешествия к энергетическим сердцам Крыма — скалам, морю и горам, которые меняют людей
+            Путешествия к энергетическим сердцам Крыма и Адыгеи — скалам, морю и горам, которые меняют людей
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button onClick={() => scrollTo("places")} className="px-8 py-3 bg-[#4a9db5] text-[#0d1117] font-golos text-sm tracking-widest uppercase hover:bg-[#5ab0c8] transition-colors font-medium">
