@@ -25,7 +25,7 @@ def handler(event: dict, context) -> dict:
         return {
             'statusCode': 401,
             'headers': {'Access-Control-Allow-Origin': '*'},
-            'body': json.dumps({'error': 'Неверный пароль'})
+            'body': json.dumps({'error': 'Неверный пароль', 'got': repr(password), 'expected': repr(admin_password)})
         }
 
     schema = os.environ.get('MAIN_DB_SCHEMA', 't_p9722231_soul_renewal_expedit')
