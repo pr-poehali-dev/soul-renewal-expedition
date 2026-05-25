@@ -26,16 +26,19 @@ export default function Admin() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`${API_URL}?pwd=${encodeURIComponent(password)}`);
+      const url = `${API_URL}?pwd=${encodeURIComponent(password)}`;
+      console.log("Запрос:", url);
+      const res = await fetch(url);
       const data = await res.json();
+      console.log("Ответ:", res.status, data);
       if (res.ok) {
         setBookings(data.bookings);
         setAuthed(true);
       } else {
-        setError("Неверный пароль");
+        setError(`Неверный пароль (${res.status}): ${JSON.stringify(data)}`);
       }
-    } catch {
-      setError("Ошибка подключения");
+    } catch (e) {
+      setError("Ошибка подключения: " + String(e));
     }
     setLoading(false);
   };
