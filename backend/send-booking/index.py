@@ -43,7 +43,10 @@ def handler(event: dict, context) -> dict:
 
     # --- Сохранение в БД ---
     try:
-        conn = psycopg2.connect(os.environ['DATABASE_URL'])
+        dsn = os.environ['DATABASE_URL']
+        if '?' not in dsn:
+            dsn += '?options=-csearch_path%3Dt_p9722231_soul_renewal_expedit'
+        conn = psycopg2.connect(dsn)
         cur = conn.cursor()
         cur.execute(
             "INSERT INTO clients (name, phone, expedition, message, departure_date, from_moscow, city) VALUES (%s, %s, %s, %s, %s, %s, %s)",
