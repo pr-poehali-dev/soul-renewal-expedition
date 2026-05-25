@@ -18,7 +18,7 @@ def handler(event: dict, context) -> dict:
             'body': ''
         }
 
-    password = event.get('headers', {}).get('x-admin-password', '')
+    password = (event.get('queryStringParameters') or {}).get('pwd', '')
     admin_password = os.environ.get('ADMIN_PASSWORD', 'alena2011')
 
     if password != admin_password:

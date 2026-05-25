@@ -26,9 +26,7 @@ export default function Admin() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(API_URL, {
-        headers: { "X-Admin-Password": password },
-      });
+      const res = await fetch(`${API_URL}?pwd=${encodeURIComponent(password)}`);
       const data = await res.json();
       if (res.ok) {
         setBookings(data.bookings);
@@ -45,9 +43,7 @@ export default function Admin() {
   const refresh = async () => {
     setLoading(true);
     try {
-      const res = await fetch(API_URL, {
-        headers: { "X-Admin-Password": password },
-      });
+      const res = await fetch(`${API_URL}?pwd=${encodeURIComponent(password)}`);
       const data = await res.json();
       if (res.ok) setBookings(data.bookings);
     } catch (e) {
