@@ -30,7 +30,7 @@ def handler(event: dict, context) -> dict:
 
     conn = psycopg2.connect(os.environ['DATABASE_URL'])
     cur = conn.cursor()
-    cur.execute("SELECT current_user, session_user, current_schema()")
+    cur.execute("SELECT 42 as answer")
     row = cur.fetchone()
     cur.close()
     conn.close()
@@ -38,5 +38,5 @@ def handler(event: dict, context) -> dict:
     return {
         'statusCode': 200,
         'headers': {'Access-Control-Allow-Origin': '*'},
-        'body': json.dumps({'current_user': row[0], 'session_user': row[1], 'schema': row[2]})
+        'body': json.dumps({'answer': row[0] if row else None, 'db_url_prefix': os.environ.get('DATABASE_URL', '')[:40]})
     }
