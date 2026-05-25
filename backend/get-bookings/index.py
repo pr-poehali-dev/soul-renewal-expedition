@@ -2,7 +2,6 @@ import json
 import os
 import psycopg2
 import psycopg2.extras
-# redeploy
 
 
 def handler(event: dict, context) -> dict:
@@ -29,14 +28,11 @@ def handler(event: dict, context) -> dict:
             'body': json.dumps({'error': 'Неверный пароль'})
         }
 
-    dsn = os.environ['DATABASE_URL']
-    if '?' not in dsn:
-        dsn += '?options=-csearch_path%3Dt_p9722231_soul_renewal_expedit'
-    conn = psycopg2.connect(dsn)
+    conn = psycopg2.connect(os.environ['DATABASE_URL'])
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cur.execute("""
-        SELECT id, name, phone, expedition, message, departure_date, from_moscow, city, created_at
-        FROM clients
+        SELECT id, name, phone, expedition, message, departure_date, from_moscow, created_at
+        FROM t_p9722231_soul_renewal_expedit.clients
         ORDER BY created_at DESC
     """)
     rows = cur.fetchall()
@@ -53,7 +49,6 @@ def handler(event: dict, context) -> dict:
             'message': row['message'] or '',
             'departure_date': str(row['departure_date']) if row['departure_date'] else '',
             'from_moscow': row['from_moscow'],
-            'city': row['city'] or '',
             'created_at': row['created_at'].strftime('%d.%m.%Y %H:%M') if row['created_at'] else ''
         })
 
