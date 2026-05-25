@@ -1,4 +1,5 @@
 {
+  "get-bookings": "https://functions.poehali.dev/010b391d-4030-45e8-83e1-3a0218d9223b",
   "get-chat-id": "https://functions.poehali.dev/fd7566f9-c0ec-4579-8375-bd0207c7baab",
   "send-booking": "https://functions.poehali.dev/a4e9dd8d-21dc-438a-a766-99a50185d91f"
 }
