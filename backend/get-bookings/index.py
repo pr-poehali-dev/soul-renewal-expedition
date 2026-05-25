@@ -19,9 +19,9 @@ def handler(event: dict, context) -> dict:
         }
 
     password = event.get('headers', {}).get('x-admin-password', '')
-    admin_password = os.environ.get('ADMIN_PASSWORD', '')
+    admin_password = os.environ.get('ADMIN_PASSWORD', 'alena2011')
 
-    if not admin_password or password != admin_password:
+    if password != admin_password:
         return {
             'statusCode': 401,
             'headers': {'Access-Control-Allow-Origin': '*'},
