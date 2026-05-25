@@ -29,14 +29,32 @@ def handler(event: dict, context) -> dict:
         }
 
     conn = psycopg2.connect(os.environ['DATABASE_URL'])
-    cur = conn.cursor()
-    cur.execute("SELECT 42 as answer")
-    row = cur.fetchone()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute("""
+        SELECT id, name, phone, expedition, message, departure_date, from_moscow, city, created_at
+        FROM clients
+        ORDER BY created_at DESC
+    """)
+    rows = cur.fetchall()
     cur.close()
     conn.close()
+
+    bookings = []
+    for row in rows:
+        bookings.append({
+            'id': row['id'],
+            'name': row['name'],
+            'phone': row['phone'],
+            'expedition': row['expedition'],
+            'message': row['message'] or '',
+            'departure_date': str(row['departure_date']) if row['departure_date'] else '',
+            'from_moscow': row['from_moscow'],
+            'city': row['city'] or '',
+            'created_at': row['created_at'].strftime('%d.%m.%Y %H:%M') if row['created_at'] else ''
+        })
 
     return {
         'statusCode': 200,
         'headers': {'Access-Control-Allow-Origin': '*'},
-        'body': json.dumps({'answer': row[0] if row else None, 'db_url_prefix': os.environ.get('DATABASE_URL', '')[:40]})
+        'body': json.dumps({'bookings': bookings}, ensure_ascii=False)
     }
