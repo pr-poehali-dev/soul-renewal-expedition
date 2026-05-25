@@ -28,13 +28,9 @@ def handler(event: dict, context) -> dict:
             'body': json.dumps({'error': 'Неверный пароль'})
         }
 
-    db_url = os.environ['DATABASE_URL']
-    if '?' in db_url:
-        db_url += '&options=-csearch_path=t_p9722231_soul_renewal_expedit'
-    else:
-        db_url += '?options=-csearch_path=t_p9722231_soul_renewal_expedit'
-    conn = psycopg2.connect(db_url)
+    conn = psycopg2.connect(os.environ['DATABASE_URL'])
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute("SET search_path TO t_p9722231_soul_renewal_expedit")
     cur.execute("SELECT id, name, phone, expedition, message, departure_date, from_moscow, city, created_at FROM clients ORDER BY created_at DESC")
     rows = cur.fetchall()
     cur.close()
