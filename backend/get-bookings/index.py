@@ -31,6 +31,7 @@ def handler(event: dict, context) -> dict:
 
     conn = psycopg2.connect(os.environ['DATABASE_URL'])
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur.execute("SET search_path TO t_p9722231_soul_renewal_expedit")
     cur.execute("""
         SELECT id, name, phone, expedition, message, departure_date, from_moscow, city, created_at
         FROM clients
