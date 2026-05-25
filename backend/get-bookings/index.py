@@ -29,32 +29,16 @@ def handler(event: dict, context) -> dict:
         }
 
     conn = psycopg2.connect(os.environ['DATABASE_URL'])
-    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    cur.execute("""
-        SELECT id, name, phone, expedition, message, departure_date, from_moscow, city, created_at
-        FROM t_p9722231_soul_renewal_expedit.clients
-        ORDER BY created_at DESC
-    """)
-    rows = cur.fetchall()
+    cur = conn.cursor()
+    cur.execute("SELECT current_user, session_user, current_schema()")
+    row = cur.fetchone()
+    cur.execute("SELECT has_schema_privilege(current_user, 't_p9722231_soul_renewal_expedit', 'USAGE')")
+    priv = cur.fetchone()
     cur.close()
     conn.close()
-
-    bookings = []
-    for row in rows:
-        bookings.append({
-            'id': row['id'],
-            'name': row['name'],
-            'phone': row['phone'],
-            'expedition': row['expedition'],
-            'message': row['message'] or '',
-            'departure_date': str(row['departure_date']) if row['departure_date'] else '',
-            'from_moscow': row['from_moscow'],
-            'city': row['city'] or '',
-            'created_at': row['created_at'].strftime('%d.%m.%Y %H:%M') if row['created_at'] else ''
-        })
 
     return {
         'statusCode': 200,
         'headers': {'Access-Control-Allow-Origin': '*'},
-        'body': json.dumps({'bookings': bookings}, ensure_ascii=False)
+        'body': json.dumps({'current_user': row[0], 'session_user': row[1], 'schema': row[2], 'has_priv': priv[0]})
     }
