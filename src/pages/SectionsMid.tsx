@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
 import Lightbox from "@/components/ui/Lightbox";
-import { places, practices, reviews, galleryImages } from "./data";
+import { places, programItems, romanticCamping, reviews, galleryImages } from "./data";
 
 interface SectionsMidProps {
   galleryIndex: number;
@@ -56,27 +56,34 @@ const SectionsMid = ({ galleryIndex, setGalleryIndex, scrollTo }: SectionsMidPro
         </div>
       </section>
 
-      {/* PRACTICES */}
+      {/* PROGRAM */}
       <section id="practices" className="py-32 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <p className="font-golos text-xs tracking-[0.4em] text-[#4a9db5] uppercase mb-4">Программа</p>
-            <h2 className="font-cormorant text-5xl md:text-6xl font-light text-[#e8ddd0] mb-4"><em className="italic text-[#c9a96e]">Практики</em></h2>
+            <p className="font-golos text-xs tracking-[0.4em] text-[#4a9db5] uppercase mb-4">Чем наполнено путешествие</p>
+            <h2 className="font-cormorant text-5xl md:text-6xl font-light text-[#e8ddd0] mb-4">Примерная <em className="italic text-[#c9a96e]">программа</em></h2>
             <div className="section-divider mt-6" />
           </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            {practices.map((p, i) => (
-              <div key={i} className="flex gap-6 p-8 bg-[#111820] border border-white/5 hover:border-[#4a9db5]/20 transition-colors">
-                <div className="text-4xl flex-shrink-0">{p.icon}</div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {programItems.map((p, i) => (
+              <div key={i} className="flex gap-5 p-6 bg-[#111820] border border-white/5 hover:border-[#4a9db5]/20 transition-colors">
+                <div className="text-3xl flex-shrink-0">{p.icon}</div>
                 <div>
-                  <div className="flex items-center gap-3 mb-3 flex-wrap">
-                    <h3 className="font-cormorant text-2xl text-[#e8ddd0] font-light">{p.title}</h3>
-                    <span className="font-golos text-xs text-[#4a9db5] bg-[#4a9db5]/10 px-2 py-1 rounded-full whitespace-nowrap">{p.duration}</span>
-                  </div>
+                  <h3 className="font-cormorant text-xl text-[#e8ddd0] font-light mb-1">{p.title}</h3>
                   <p className="font-golos text-sm text-[#9a8f84] leading-relaxed">{p.desc}</p>
                 </div>
               </div>
             ))}
+          </div>
+          <div className="mt-6 flex gap-5 p-6 bg-[#4a9db5]/5 border border-[#4a9db5]/20">
+            <div className="text-3xl flex-shrink-0">{romanticCamping.icon}</div>
+            <div>
+              <div className="flex items-center gap-3 flex-wrap mb-1">
+                <h3 className="font-cormorant text-xl text-[#e8ddd0] font-light">{romanticCamping.title}</h3>
+                <span className="font-golos text-[10px] text-[#c9a96e] bg-[#c9a96e]/10 px-2 py-1 tracking-wide uppercase">За отдельную плату</span>
+              </div>
+              <p className="font-golos text-sm text-[#9a8f84] leading-relaxed">{romanticCamping.desc}</p>
+            </div>
           </div>
         </div>
       </section>
