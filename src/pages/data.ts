@@ -270,6 +270,44 @@ export const expeditions = [
 
 export const galleryImages = [HERO_IMG, ENERGY_IMG, PANORAMA_IMG, HERO_IMG, ENERGY_IMG, PANORAMA_IMG];
 
+export const tariffs = [
+  {
+    id: "solo",
+    name: "На одного",
+    icon: "🧍",
+    desc: "Индивидуальный формат для тех, кто хочет пройти путь наедине с собой",
+    options: [
+      { days: "2 дня", price: 17500 },
+      { days: "3 дня", price: 23500 },
+    ],
+    unit: "за поездку",
+  },
+  {
+    id: "family",
+    name: "Семейный",
+    icon: "👨‍👩‍👧",
+    desc: "Для семьи или близкой компании — от 3 дней, расчёт на 3 человек",
+    options: [
+      { days: "от 3 дней", price: 40000 },
+    ],
+    unit: "за 3 человек",
+    extraPersonPrice: 5000,
+    baseGroupSize: 3,
+  },
+  {
+    id: "energy",
+    name: "Энергетический",
+    icon: "⚡",
+    desc: "Групповой формат с единомышленниками — от 4 человек в группе",
+    options: [
+      { days: "2 дня", price: 10000 },
+      { days: "3 дня", price: 15000 },
+    ],
+    unit: "с человека, от 4 человек",
+    minGroupSize: 4,
+  },
+];
+
 export const adygeaPlaces = [
   {
     name: "Лагонаки",

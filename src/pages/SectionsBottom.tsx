@@ -1,6 +1,10 @@
 import { useState, useMemo } from "react";
+import { format } from "date-fns";
+import { ru } from "date-fns/locale";
 import Icon from "@/components/ui/icon";
-import { expeditions, PANORAMA_IMG } from "./data";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { expeditions, tariffs, PANORAMA_IMG } from "./data";
 
 const BLOCKED_START = new Date(2026, 5, 10); // 10 июня 2026
 const BLOCKED_END = new Date(2026, 5, 25);   // 25 июня 2026
@@ -48,6 +52,16 @@ function getPrice(basePrice: string, city: string | null): string {
   return basePrice;
 }
 
+function adjustForCity(basePrice: number, city: string | null): number | null {
+  if (!city) return null;
+  if (city === "Москва") return basePrice + 5000;
+  return basePrice;
+}
+
+function formatRub(n: number): string {
+  return `${n.toLocaleString("ru-RU")} ₽`;
+}
+
 interface SectionsBottomProps {
   selectedExpedition: string;
   setSelectedExpedition: (v: string) => void;
@@ -67,6 +81,14 @@ interface SectionsBottomProps {
   setDepartureCity: (v: string) => void;
   extraServices: string[];
   setExtraServices: (v: string[]) => void;
+  selectedTariff: string | null;
+  setSelectedTariff: (v: string | null) => void;
+  tariffDays: string;
+  setTariffDays: (v: string) => void;
+  groupSize: number;
+  setGroupSize: (v: number) => void;
+  customDate: Date | undefined;
+  setCustomDate: (v: Date | undefined) => void;
   scrollTo: (id: string) => void;
 }
 
@@ -85,6 +107,10 @@ const SectionsBottom = ({
   formError, setFormError,
   departureCity, setDepartureCity,
   extraServices, setExtraServices,
+  selectedTariff, setSelectedTariff,
+  tariffDays, setTariffDays,
+  groupSize, setGroupSize,
+  customDate, setCustomDate,
   scrollTo,
 }: SectionsBottomProps) => {
   const toggleExtraService = (label: string) => {
@@ -96,6 +122,22 @@ const SectionsBottom = ({
   };
   const isMoscow = departureCity === "Москва";
   const [selectedDate, setSelectedDate] = useState("");
+
+  const activeTariff = tariffs.find((t) => t.id === selectedTariff) || null;
+  const activeTariffOption = activeTariff?.options.find((o) => o.days === tariffDays) || activeTariff?.options[0] || null;
+
+  const tariffPrice = useMemo(() => {
+    if (!activeTariff || !activeTariffOption || !departureCity) return null;
+    let base = activeTariffOption.price;
+    if (activeTariff.id === "family" && activeTariff.extraPersonPrice && activeTariff.baseGroupSize) {
+      const extra = Math.max(0, groupSize - activeTariff.baseGroupSize);
+      base = base + extra * activeTariff.extraPersonPrice;
+    }
+    if (activeTariff.id === "energy") {
+      base = base * groupSize;
+    }
+    return adjustForCity(base, departureCity);
+  }, [activeTariff, activeTariffOption, departureCity, groupSize]);
 
   type ScheduleItem = { time: string; desc: string };
   type DayBlock = { day: string; subtitle: string; items: ScheduleItem[] };
@@ -187,6 +229,106 @@ const SectionsBottom = ({
               </div>
             ))}
           </div>
+
+          {/* TARIFFS */}
+          <div className="text-center mb-10">
+            <p className="font-golos text-xs tracking-[0.3em] text-[#9a8f84] uppercase mb-3">Или выберите формат</p>
+            <h3 className="font-cormorant text-3xl md:text-4xl font-light text-[#e8ddd0]">Варианты <em className="italic text-[#c9a96e]">тарифов</em></h3>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6 mb-16">
+            {tariffs.map((t) => (
+              <div
+                key={t.id}
+                className={`flex flex-col p-7 border transition-all ${selectedTariff === t.id ? "border-[#4a9db5] bg-[#4a9db5]/5" : "border-white/5 bg-[#111820] hover:border-[#4a9db5]/30"}`}
+              >
+                <div className="text-3xl mb-3">{t.icon}</div>
+                <h4 className="font-cormorant text-2xl text-[#e8ddd0] font-light mb-2">{t.name}</h4>
+                <p className="font-golos text-xs text-[#9a8f84] leading-relaxed mb-5 flex-1">{t.desc}</p>
+                <div className="space-y-2 mb-5">
+                  {t.options.map((o) => (
+                    <div key={o.days} className="flex items-center justify-between px-3 py-2 border border-white/5 bg-[#0d1117]">
+                      <span className="font-golos text-xs text-[#9a8f84]">{o.days}</span>
+                      <span className="font-cormorant text-lg text-[#c9a96e]">{formatRub(o.price)}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="font-golos text-[11px] text-[#9a8f84]/60 mb-5">{t.unit}</p>
+                <button
+                  onClick={() => {
+                    setSelectedTariff(t.id);
+                    setTariffDays(t.options[0].days);
+                    setGroupSize(t.id === "family" ? (t.baseGroupSize || 3) : t.id === "energy" ? (t.minGroupSize || 4) : 1);
+                  }}
+                  className={`w-full py-3 border font-golos text-xs tracking-widest uppercase transition-all mt-auto ${selectedTariff === t.id ? "bg-[#4a9db5] border-[#4a9db5] text-[#0d1117]" : "border-[#4a9db5]/40 text-[#4a9db5] hover:bg-[#4a9db5]/10"}`}
+                >
+                  {selectedTariff === t.id ? "Выбрано" : "Выбрать тариф"}
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {selectedTariff && activeTariff && (
+            <div className="max-w-2xl mx-auto mb-16 p-6 border border-[#4a9db5]/20 bg-[#4a9db5]/5">
+              <div className="flex items-center justify-between mb-4">
+                <span className="font-golos text-xs text-[#4a9db5] uppercase tracking-wide">Настройка тарифа «{activeTariff.name}»</span>
+                <button onClick={() => setSelectedTariff(null)} className="text-[#9a8f84] hover:text-[#e8ddd0]">
+                  <Icon name="X" size={14} />
+                </button>
+              </div>
+              {activeTariff.options.length > 1 && (
+                <div className="flex gap-2 mb-4">
+                  {activeTariff.options.map((o) => (
+                    <button
+                      key={o.days}
+                      onClick={() => setTariffDays(o.days)}
+                      className={`px-4 py-2 font-golos text-xs border transition-all ${tariffDays === o.days ? "border-[#4a9db5] bg-[#4a9db5]/10 text-[#4a9db5]" : "border-white/10 text-[#9a8f84] hover:border-[#4a9db5]/40"}`}
+                    >
+                      {o.days}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {(activeTariff.id === "family" || activeTariff.id === "energy") && (
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="font-golos text-xs text-[#9a8f84]">Количество человек</span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setGroupSize(Math.max(activeTariff.id === "family" ? (activeTariff.baseGroupSize || 3) : (activeTariff.minGroupSize || 4), groupSize - 1))}
+                      className="w-8 h-8 border border-white/10 text-[#9a8f84] hover:border-[#4a9db5]/40 hover:text-[#4a9db5] flex items-center justify-center"
+                    >
+                      −
+                    </button>
+                    <span className="font-cormorant text-xl text-[#e8ddd0] w-8 text-center">{groupSize}</span>
+                    <button
+                      onClick={() => setGroupSize(groupSize + 1)}
+                      className="w-8 h-8 border border-white/10 text-[#9a8f84] hover:border-[#4a9db5]/40 hover:text-[#4a9db5] flex items-center justify-center"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              )}
+              {departureCity ? (
+                tariffPrice !== null && (
+                  <div className="font-cormorant text-3xl text-[#c9a96e] font-light">
+                    Итого: {formatRub(tariffPrice)}
+                  </div>
+                )
+              ) : (
+                <p className="font-golos text-xs text-[#9a8f84]/60">Выберите город выезда выше, чтобы увидеть стоимость</p>
+              )}
+              <button
+                onClick={() => {
+                  setSelectedExpedition(`${activeTariff.name} · ${tariffDays}`);
+                  scrollTo("booking");
+                }}
+                className="w-full mt-5 py-3 border border-[#4a9db5]/40 text-[#4a9db5] font-golos text-xs tracking-widest uppercase hover:bg-[#4a9db5]/10 transition-all"
+              >
+                Забронировать этот тариф
+              </button>
+            </div>
+          )}
+
           <div className="max-w-2xl mx-auto p-8 bg-[#111820] border border-white/5">
             <h3 className="font-cormorant text-3xl text-[#e8ddd0] font-light mb-2 text-center">Записаться в экспедицию</h3>
             <p className="font-golos text-sm text-[#9a8f84] text-center mb-8">Выберите маршрут и оставьте заявку — свяжемся в течение дня</p>
@@ -222,16 +364,39 @@ const SectionsBottom = ({
                       <button
                         key={i}
                         type="button"
-                        onClick={() => setSelectedDate(d.label)}
+                        onClick={() => { setSelectedDate(d.label); setCustomDate(undefined); }}
                         className={`px-3 py-2 text-left font-golos text-xs transition-all border ${selectedDate === d.label ? "border-[#4a9db5] bg-[#4a9db5]/10 text-[#4a9db5]" : "border-white/10 bg-[#0d1117] text-[#9a8f84] hover:border-[#4a9db5]/40"}`}
                       >
                         {d.label}
                       </button>
                     ))}
                   </div>
-                  <p className="font-golos text-xs text-[#9a8f84]/40 mt-2">
+                  <p className="font-golos text-xs text-[#9a8f84]/40 mt-2 mb-3">
                     ⚠ Период 10–25 июня недоступен для бронирования
                   </p>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button
+                        type="button"
+                        className={`w-full flex items-center justify-center gap-2 px-3 py-2.5 font-golos text-xs border transition-all ${customDate ? "border-[#4a9db5] bg-[#4a9db5]/10 text-[#4a9db5]" : "border-dashed border-white/20 text-[#9a8f84] hover:border-[#4a9db5]/40"}`}
+                      >
+                        <Icon name="CalendarPlus" size={12} />
+                        {customDate ? `Своя дата: ${format(customDate, "d MMMM (EEEEEE)", { locale: ru })}` : "Предложить свою дату"}
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0 bg-[#111820] border-white/10">
+                      <Calendar
+                        mode="single"
+                        selected={customDate}
+                        onSelect={(date) => {
+                          setCustomDate(date);
+                          if (date) setSelectedDate(`${format(date, "d MMMM (EEEEEE)", { locale: ru })} — по согласованию`);
+                        }}
+                        disabled={(date) => date < new Date(new Date().setDate(new Date().getDate() + 1)) || (date >= BLOCKED_START && date <= BLOCKED_END)}
+                        className="text-[#e8ddd0]"
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
 
                 <div className="mb-4">
@@ -255,6 +420,13 @@ const SectionsBottom = ({
                           {exp.name} — {exp.days}
                         </option>
                       ))}
+                    </optgroup>
+                    <optgroup label="── Тарифы ──" style={{ color: "#c9a96e", background: "#0d1117" }}>
+                      {tariffs.flatMap((t) => t.options.map((o) => (
+                        <option key={`${t.id}-${o.days}`} value={`${t.name} · ${o.days}`} style={{ background: "#0d1117", color: "#e8ddd0" }}>
+                          {t.name} — {o.days}
+                        </option>
+                      )))}
                     </optgroup>
                   </select>
                 </div>
@@ -324,7 +496,14 @@ const SectionsBottom = ({
                       const res = await fetch("https://functions.poehali.dev/a4e9dd8d-21dc-438a-a766-99a50185d91f", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ name: formName, phone: formPhone, expedition: selectedExpedition, message: formMessage, date: selectedDate, from_moscow: isMoscow, city: departureCity, extra_services: extraServices.join(", ") }),
+                        body: JSON.stringify({
+                          name: formName, phone: formPhone, expedition: selectedExpedition, message: formMessage,
+                          date: selectedDate, from_moscow: isMoscow, city: departureCity,
+                          extra_services: extraServices.join(", "),
+                          tariff_info: activeTariff
+                            ? `${activeTariff.name} · ${tariffDays}${(activeTariff.id === "family" || activeTariff.id === "energy") ? ` · ${groupSize} чел.` : ""}${tariffPrice !== null ? ` · ${formatRub(tariffPrice)}` : ""}`
+                            : "",
+                        }),
                       });
                       if (res.ok) {
                         setFormSent(true);

@@ -29,6 +29,10 @@ const Index = () => {
   const [formError, setFormError] = useState("");
   const [departureCity, setDepartureCity] = useState<string | null>(null);
   const [extraServices, setExtraServices] = useState<string[]>([]);
+  const [selectedTariff, setSelectedTariff] = useState<string | null>(null);
+  const [tariffDays, setTariffDays] = useState<string>("");
+  const [groupSize, setGroupSize] = useState<number>(3);
+  const [customDate, setCustomDate] = useState<Date | undefined>(undefined);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -93,6 +97,10 @@ const Index = () => {
         formError={formError} setFormError={setFormError}
         departureCity={departureCity} setDepartureCity={setDepartureCity}
         extraServices={extraServices} setExtraServices={setExtraServices}
+        selectedTariff={selectedTariff} setSelectedTariff={setSelectedTariff}
+        tariffDays={tariffDays} setTariffDays={setTariffDays}
+        groupSize={groupSize} setGroupSize={setGroupSize}
+        customDate={customDate} setCustomDate={setCustomDate}
         scrollTo={scrollTo}
       />
     </div>
