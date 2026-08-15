@@ -177,7 +177,8 @@ export const expeditions = [
         ],
       },
     ],
-  }  {
+  },
+  {
     region: "Крым",
     name: "Крым · 2 дня",
     days: "2 дня",
