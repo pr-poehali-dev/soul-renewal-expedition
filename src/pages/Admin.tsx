@@ -12,6 +12,7 @@ interface Booking {
   departure_date: string;
   from_moscow: boolean;
   city: string;
+  extra_services: string;
   created_at: string;
 }
 
@@ -138,6 +139,12 @@ export default function Admin() {
                     <div>
                       <div className="font-golos text-xs text-[#9a8f84] mb-1">Город</div>
                       <div className="font-golos text-sm text-[#e8ddd0]">{b.city}</div>
+                    </div>
+                  )}
+                  {b.extra_services && (
+                    <div>
+                      <div className="font-golos text-xs text-[#9a8f84] mb-1">Доп. услуги</div>
+                      <div className="font-golos text-sm text-[#4a9db5]">{b.extra_services}</div>
                     </div>
                   )}
                   {b.message && (

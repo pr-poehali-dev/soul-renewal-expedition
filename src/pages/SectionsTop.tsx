@@ -22,16 +22,16 @@ const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${HERO_IMG})` }} />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0d1117]/60 via-[#0d1117]/30 to-[#0d1117]" />
         <div className="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-in">
-          <p className="font-golos text-xs tracking-[0.4em] text-[#4a9db5] uppercase mb-6">Экспедиции по местам силы</p>
+          <p className="font-golos text-xs tracking-[0.4em] text-[#8ab89a] uppercase mb-6">Экспедиции по местам силы</p>
           <h1 className="font-cormorant text-6xl md:text-8xl font-light text-[#e8ddd0] leading-none mb-6">
-            Крым и Горы Кавказа.<br /><em className="italic text-[#c9a96e]">Живая земля.</em>
+            Адыгея и Крым.<br /><em className="italic text-[#c9a96e]">Живая земля.</em>
           </h1>
           <p className="font-golos text-lg text-[#9a8f84] max-w-xl mx-auto mb-10 leading-relaxed">
-            Путешествия к энергетическим сердцам Крыма и Адыгеи — скалам, морю и горам, которые меняют людей
+            Путешествия к энергетическим сердцам Адыгеи и Крыма — горам Кавказа, скалам и морю, которые меняют людей
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button onClick={() => scrollTo("places")} className="px-8 py-3 bg-[#4a9db5] text-[#0d1117] font-golos text-sm tracking-widest uppercase hover:bg-[#5ab0c8] transition-colors font-medium">
-              Места силы
+            <button onClick={() => scrollTo("adygea")} className="px-8 py-3 bg-[#5a8a6e] text-[#0d1117] font-golos text-sm tracking-widest uppercase hover:bg-[#6b9c7f] transition-colors font-medium">
+              Туры в Адыгею
             </button>
             <button onClick={() => scrollTo("booking")} className="px-8 py-3 border border-[#4a9db5]/50 text-[#4a9db5] font-golos text-sm tracking-widest uppercase hover:border-[#4a9db5] hover:bg-[#4a9db5]/10 transition-all">
               Забронировать
@@ -40,96 +40,6 @@ const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
         </div>
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
           <Icon name="ChevronDown" size={24} className="text-[#4a9db5]/60" />
-        </div>
-      </section>
-
-      {/* ABOUT */}
-      <section id="about" className="py-32 px-6">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <p className="font-golos text-xs tracking-[0.4em] text-[#4a9db5] uppercase mb-4">О нас</p>
-            <h2 className="font-cormorant text-5xl md:text-6xl font-light text-[#e8ddd0] mb-8 leading-tight">
-              Почему важно побывать<br /><em className="italic text-[#c9a96e]">в местах силы?</em>
-            </h2>
-            <p className="font-golos text-[#9a8f84] leading-relaxed mb-5 text-base">
-              Места силы — это особые точки на планете, где концентрируется мощная энергия. Люди издревле стремились сюда, чтобы:
-            </p>
-            <ul className="mb-5 space-y-1">
-              {["восстановить жизненные силы", "получить вдохновение", "расширить сознание", "найти гармонию", "ощутить связь с природой и Вселенной"].map((item, i) => (
-                <li key={i} className="flex items-start gap-2 font-golos text-sm text-[#9a8f84]">
-                  <span className="text-[#4a9db5] mt-0.5">—</span> {item}
-                </li>
-              ))}
-            </ul>
-            <p className="font-golos text-[#9a8f84] leading-relaxed mb-4 text-base">В таких местах можно:</p>
-            <ul className="mb-6 space-y-1">
-              {["медитировать", "загадывать желания", "работать с внутренними запросами", "проводить ритуалы", "настраиваться на глубокие размышления"].map((item, i) => (
-                <li key={i} className="flex items-start gap-2 font-golos text-sm text-[#9a8f84]">
-                  <span className="text-[#c9a96e] mt-0.5">—</span> {item}
-                </li>
-              ))}
-            </ul>
-            <p className="font-golos text-[#9a8f84] leading-relaxed mb-8 text-base">
-              Посещение места силы способствует <span className="text-[#e8ddd0]">внутренней трансформации</span>, помогает избавиться от блоков, получить озарения и улучшить здоровье. Многие отмечают, что после таких поездок жизнь начинает меняться: появляются новые возможности, уходят страхи, реализуются мечты.
-            </p>
-
-            <p className="font-golos text-xs tracking-[0.3em] text-[#4a9db5] uppercase mb-5">🌌 Почему стоит отправиться с нами?</p>
-
-            <div className="space-y-5 mb-8">
-              <div className="flex gap-4">
-                <div className="w-1 shrink-0 mt-1 rounded-full bg-[#c9a96e]/60" />
-                <div>
-                  <span className="font-golos text-sm text-[#e8ddd0] font-medium">Места силы: </span>
-                  <span className="font-golos text-sm text-[#9a8f84]">исследуйте уникальные локации, где природа и история переплетаются, создавая мощные энергетические потоки. Крым и Адыгея — древние святыни, где вы ощутите связь с чем-то большим.</span>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="w-1 shrink-0 mt-1 rounded-full bg-[#c9a96e]/60" />
-                <div>
-                  <span className="font-golos text-sm text-[#e8ddd0] font-medium">Трансформация души: </span>
-                  <span className="font-golos text-sm text-[#9a8f84]">практики медитации и осознанности помогут обновить энергетику и найти гармонию внутри себя.</span>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="w-1 shrink-0 mt-1 rounded-full bg-[#c9a96e]/60" />
-                <div>
-                  <span className="font-golos text-sm text-[#e8ddd0] font-medium">Энергетическое обновление: </span>
-                  <span className="font-golos text-sm text-[#9a8f84]">древние знания и современные методики освобождают от негатива. Вы вернётесь обновлённым, с новыми силами и ясностью мысли.</span>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="w-1 shrink-0 mt-1 rounded-full bg-[#c9a96e]/60" />
-                <div>
-                  <span className="font-golos text-sm text-[#e8ddd0] font-medium">Сообщество единомышленников: </span>
-                  <span className="font-golos text-sm text-[#9a8f84]">вы становитесь частью дружной семьи, где каждый делится опытом и поддерживает друг друга на пути к самопознанию.</span>
-                </div>
-              </div>
-            </div>
-
-            <p className="font-golos text-sm text-[#8ab89a] italic mb-8">
-              🌿 Откройте мир, где каждый момент наполнен смыслом, а каждое место — возможность для роста и обновления.
-            </p>
-
-            <div className="grid grid-cols-3 gap-6 pt-6 border-t border-white/10">
-              <div>
-                <div className="font-cormorant text-4xl text-[#c9a96e] font-light">10+</div>
-                <div className="font-golos text-xs text-[#9a8f84] mt-1 tracking-wide">лет опыта</div>
-              </div>
-              <div>
-                <div className="font-cormorant text-4xl text-[#c9a96e] font-light">600+</div>
-                <div className="font-golos text-xs text-[#9a8f84] mt-1 tracking-wide">участников</div>
-              </div>
-              <div>
-                <div className="font-cormorant text-4xl text-[#c9a96e] font-light">6</div>
-                <div className="font-golos text-xs text-[#9a8f84] mt-1 tracking-wide">мест силы</div>
-              </div>
-            </div>
-          </div>
-          <div className="relative">
-            <img src={ENERGY_IMG} alt="Место силы" className="w-full h-[500px] object-cover" style={{ clipPath: "polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%)" }} />
-            <div className="absolute -bottom-4 -left-4 w-32 h-32 border border-[#4a9db5]/30" />
-            <div className="absolute -top-4 -right-4 w-32 h-32 border border-[#c9a96e]/30" />
-          </div>
         </div>
       </section>
 
@@ -265,6 +175,95 @@ const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
             >
               Также смотрите — туры по Крыму ↓
             </button>
+          </div>
+        </div>
+      </section>
+      {/* ABOUT */}
+      <section id="about" className="py-32 px-6">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <p className="font-golos text-xs tracking-[0.4em] text-[#4a9db5] uppercase mb-4">О нас</p>
+            <h2 className="font-cormorant text-5xl md:text-6xl font-light text-[#e8ddd0] mb-8 leading-tight">
+              Почему важно побывать<br /><em className="italic text-[#c9a96e]">в местах силы?</em>
+            </h2>
+            <p className="font-golos text-[#9a8f84] leading-relaxed mb-5 text-base">
+              Места силы — это особые точки на планете, где концентрируется мощная энергия. Люди издревле стремились сюда, чтобы:
+            </p>
+            <ul className="mb-5 space-y-1">
+              {["восстановить жизненные силы", "получить вдохновение", "расширить сознание", "найти гармонию", "ощутить связь с природой и Вселенной"].map((item, i) => (
+                <li key={i} className="flex items-start gap-2 font-golos text-sm text-[#9a8f84]">
+                  <span className="text-[#4a9db5] mt-0.5">—</span> {item}
+                </li>
+              ))}
+            </ul>
+            <p className="font-golos text-[#9a8f84] leading-relaxed mb-4 text-base">В таких местах можно:</p>
+            <ul className="mb-6 space-y-1">
+              {["медитировать", "загадывать желания", "работать с внутренними запросами", "проводить ритуалы", "настраиваться на глубокие размышления"].map((item, i) => (
+                <li key={i} className="flex items-start gap-2 font-golos text-sm text-[#9a8f84]">
+                  <span className="text-[#c9a96e] mt-0.5">—</span> {item}
+                </li>
+              ))}
+            </ul>
+            <p className="font-golos text-[#9a8f84] leading-relaxed mb-8 text-base">
+              Посещение места силы способствует <span className="text-[#e8ddd0]">внутренней трансформации</span>, помогает избавиться от блоков, получить озарения и улучшить здоровье. Многие отмечают, что после таких поездок жизнь начинает меняться: появляются новые возможности, уходят страхи, реализуются мечты.
+            </p>
+
+            <p className="font-golos text-xs tracking-[0.3em] text-[#4a9db5] uppercase mb-5">🌌 Почему стоит отправиться с нами?</p>
+
+            <div className="space-y-5 mb-8">
+              <div className="flex gap-4">
+                <div className="w-1 shrink-0 mt-1 rounded-full bg-[#c9a96e]/60" />
+                <div>
+                  <span className="font-golos text-sm text-[#e8ddd0] font-medium">Места силы: </span>
+                  <span className="font-golos text-sm text-[#9a8f84]">исследуйте уникальные локации, где природа и история переплетаются, создавая мощные энергетические потоки. Крым и Адыгея — древние святыни, где вы ощутите связь с чем-то большим.</span>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-1 shrink-0 mt-1 rounded-full bg-[#c9a96e]/60" />
+                <div>
+                  <span className="font-golos text-sm text-[#e8ddd0] font-medium">Трансформация души: </span>
+                  <span className="font-golos text-sm text-[#9a8f84]">практики медитации и осознанности помогут обновить энергетику и найти гармонию внутри себя.</span>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-1 shrink-0 mt-1 rounded-full bg-[#c9a96e]/60" />
+                <div>
+                  <span className="font-golos text-sm text-[#e8ddd0] font-medium">Энергетическое обновление: </span>
+                  <span className="font-golos text-sm text-[#9a8f84]">древние знания и современные методики освобождают от негатива. Вы вернётесь обновлённым, с новыми силами и ясностью мысли.</span>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-1 shrink-0 mt-1 rounded-full bg-[#c9a96e]/60" />
+                <div>
+                  <span className="font-golos text-sm text-[#e8ddd0] font-medium">Сообщество единомышленников: </span>
+                  <span className="font-golos text-sm text-[#9a8f84]">вы становитесь частью дружной семьи, где каждый делится опытом и поддерживает друг друга на пути к самопознанию.</span>
+                </div>
+              </div>
+            </div>
+
+            <p className="font-golos text-sm text-[#8ab89a] italic mb-8">
+              🌿 Откройте мир, где каждый момент наполнен смыслом, а каждое место — возможность для роста и обновления.
+            </p>
+
+            <div className="grid grid-cols-3 gap-6 pt-6 border-t border-white/10">
+              <div>
+                <div className="font-cormorant text-4xl text-[#c9a96e] font-light">10+</div>
+                <div className="font-golos text-xs text-[#9a8f84] mt-1 tracking-wide">лет опыта</div>
+              </div>
+              <div>
+                <div className="font-cormorant text-4xl text-[#c9a96e] font-light">600+</div>
+                <div className="font-golos text-xs text-[#9a8f84] mt-1 tracking-wide">участников</div>
+              </div>
+              <div>
+                <div className="font-cormorant text-4xl text-[#c9a96e] font-light">6</div>
+                <div className="font-golos text-xs text-[#9a8f84] mt-1 tracking-wide">мест силы</div>
+              </div>
+            </div>
+          </div>
+          <div className="relative">
+            <img src={ENERGY_IMG} alt="Место силы" className="w-full h-[500px] object-cover" style={{ clipPath: "polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%)" }} />
+            <div className="absolute -bottom-4 -left-4 w-32 h-32 border border-[#4a9db5]/30" />
+            <div className="absolute -top-4 -right-4 w-32 h-32 border border-[#c9a96e]/30" />
           </div>
         </div>
       </section>

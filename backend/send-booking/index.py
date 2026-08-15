@@ -31,6 +31,7 @@ def handler(event: dict, context) -> dict:
     departure_date = body.get('date', '')
     from_moscow = body.get('from_moscow', False)
     city = body.get('city', '')
+    extra_services = body.get('extra_services', '')
 
     if not name or not phone or not expedition:
         return {
@@ -46,8 +47,8 @@ def handler(event: dict, context) -> dict:
         conn = psycopg2.connect(os.environ['DATABASE_URL'])
         cur = conn.cursor()
         cur.execute(
-            "INSERT INTO t_p9722231_soul_renewal_expedit.clients (name, phone, expedition, message, departure_date, from_moscow) VALUES (%s, %s, %s, %s, %s, %s)",
-            (name, phone, expedition, message, departure_date, from_moscow)
+            "INSERT INTO t_p9722231_soul_renewal_expedit.clients (name, phone, expedition, message, departure_date, from_moscow, extra_services, city) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+            (name, phone, expedition, message, departure_date, from_moscow, extra_services, city)
         )
         conn.commit()
         cur.close()
@@ -62,13 +63,15 @@ def handler(event: dict, context) -> dict:
         if bot_token and chat_id:
             moscow_note = " (из Москвы, +1 день)" if from_moscow else ""
             city_note = f"\n🏙 Город: {city}" if city else ""
+            extra_note = f"\n✨ Доп. услуги: {extra_services}" if extra_services else ""
             text = (
                 f"🏔 *Новая заявка на экспедицию*\n\n"
                 f"👤 Имя: {name}\n"
                 f"📞 Телефон: {phone}\n"
                 f"🗺 Экспедиция: {expedition}\n"
                 f"📅 Дата выезда: {departure_date or 'не указана'}{moscow_note}"
-                f"{city_note}\n"
+                f"{city_note}"
+                f"{extra_note}\n"
                 f"💬 Сообщение: {message or 'не указано'}"
             )
             tg_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
@@ -95,6 +98,7 @@ def handler(event: dict, context) -> dict:
             msg['To'] = email_to
 
             city_row = f"<tr><td style='padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; width: 140px;'>Город</td><td style='padding: 8px; border-bottom: 1px solid #eee;'>{city}</td></tr>" if city else ""
+            extra_row = f"<tr><td style='padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; width: 140px;'>Доп. услуги</td><td style='padding: 8px; border-bottom: 1px solid #eee;'>{extra_services}</td></tr>" if extra_services else ""
             html = f"""
             <html><body style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto;">
               <h2 style="color: #4a9db5;">🏔 Новая заявка на экспедицию</h2>
@@ -104,6 +108,7 @@ def handler(event: dict, context) -> dict:
                 <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Экспедиция</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{expedition}</td></tr>
                 <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Дата выезда</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{departure_date or 'не указана'}{'  (из Москвы, +1 день)' if from_moscow else ''}</td></tr>
                 {city_row}
+                {extra_row}
                 <tr><td style="padding: 8px; font-weight: bold;">Сообщение</td><td style="padding: 8px;">{message or 'не указано'}</td></tr>
               </table>
             </body></html>

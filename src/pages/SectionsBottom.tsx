@@ -65,8 +65,15 @@ interface SectionsBottomProps {
   setFormError: (v: string) => void;
   departureCity: string | null;
   setDepartureCity: (v: string) => void;
+  extraServices: string[];
+  setExtraServices: (v: string[]) => void;
   scrollTo: (id: string) => void;
 }
+
+const EXTRA_SERVICES = [
+  { id: "horse", label: "Конные прогулки", icon: "🐎" },
+  { id: "jeep", label: "Джипинг", icon: "🚙" },
+];
 
 const SectionsBottom = ({
   selectedExpedition, setSelectedExpedition,
@@ -77,8 +84,16 @@ const SectionsBottom = ({
   formLoading, setFormLoading,
   formError, setFormError,
   departureCity, setDepartureCity,
+  extraServices, setExtraServices,
   scrollTo,
 }: SectionsBottomProps) => {
+  const toggleExtraService = (label: string) => {
+    setExtraServices(
+      extraServices.includes(label)
+        ? extraServices.filter((s) => s !== label)
+        : [...extraServices, label]
+    );
+  };
   const isMoscow = departureCity === "Москва";
   const [selectedDate, setSelectedDate] = useState("");
 
@@ -227,15 +242,15 @@ const SectionsBottom = ({
                     style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a9db5' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`, backgroundRepeat: "no-repeat", backgroundPosition: "right 16px center" }}
                   >
                     <option value="" disabled style={{ color: "#9a8f84" }}>Выберите экспедицию</option>
-                    <optgroup label="── Крым ──" style={{ color: "#4a9db5", background: "#0d1117" }}>
-                      {expeditions.filter(e => e.region === "Крым").map((exp, i) => (
+                    <optgroup label="── Адыгея ──" style={{ color: "#8ab89a", background: "#0d1117" }}>
+                      {expeditions.filter(e => e.region === "Адыгея").map((exp, i) => (
                         <option key={i} value={exp.name} style={{ background: "#0d1117", color: "#e8ddd0" }}>
                           {exp.name} — {exp.days}
                         </option>
                       ))}
                     </optgroup>
-                    <optgroup label="── Адыгея ──" style={{ color: "#c9a96e", background: "#0d1117" }}>
-                      {expeditions.filter(e => e.region === "Адыгея").map((exp, i) => (
+                    <optgroup label="── Крым ──" style={{ color: "#4a9db5", background: "#0d1117" }}>
+                      {expeditions.filter(e => e.region === "Крым").map((exp, i) => (
                         <option key={i} value={exp.name} style={{ background: "#0d1117", color: "#e8ddd0" }}>
                           {exp.name} — {exp.days}
                         </option>
@@ -254,6 +269,29 @@ const SectionsBottom = ({
                     ))}
                   </div>
                 )}
+                <div className="mb-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Icon name="Sparkles" size={12} className="text-[#4a9db5]" />
+                    <span className="font-golos text-xs text-[#9a8f84] uppercase tracking-wide">Дополнительные услуги</span>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    {EXTRA_SERVICES.map((s) => (
+                      <label
+                        key={s.id}
+                        className={`flex items-center gap-2 px-4 py-2.5 border cursor-pointer transition-all font-golos text-sm ${extraServices.includes(s.label) ? "border-[#4a9db5] bg-[#4a9db5]/10 text-[#4a9db5]" : "border-white/10 bg-[#0d1117] text-[#9a8f84] hover:border-[#4a9db5]/40"}`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={extraServices.includes(s.label)}
+                          onChange={() => toggleExtraService(s.label)}
+                          className="accent-[#4a9db5]"
+                        />
+                        <span>{s.icon}</span>
+                        {s.label}
+                      </label>
+                    ))}
+                  </div>
+                </div>
                 <div className="grid md:grid-cols-2 gap-4 mb-4">
                   <input
                     type="text"
@@ -286,7 +324,7 @@ const SectionsBottom = ({
                       const res = await fetch("https://functions.poehali.dev/a4e9dd8d-21dc-438a-a766-99a50185d91f", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ name: formName, phone: formPhone, expedition: selectedExpedition, message: formMessage, date: selectedDate, from_moscow: isMoscow, city: departureCity }),
+                        body: JSON.stringify({ name: formName, phone: formPhone, expedition: selectedExpedition, message: formMessage, date: selectedDate, from_moscow: isMoscow, city: departureCity, extra_services: extraServices.join(", ") }),
                       });
                       if (res.ok) {
                         setFormSent(true);

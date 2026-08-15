@@ -31,7 +31,7 @@ def handler(event: dict, context) -> dict:
     conn = psycopg2.connect(os.environ['DATABASE_URL'])
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cur.execute("""
-        SELECT id, name, phone, expedition, message, departure_date, from_moscow, created_at
+        SELECT id, name, phone, expedition, message, departure_date, from_moscow, extra_services, city, created_at
         FROM t_p9722231_soul_renewal_expedit.clients
         ORDER BY created_at DESC
     """)
@@ -49,6 +49,8 @@ def handler(event: dict, context) -> dict:
             'message': row['message'] or '',
             'departure_date': str(row['departure_date']) if row['departure_date'] else '',
             'from_moscow': row['from_moscow'],
+            'extra_services': row['extra_services'] or '',
+            'city': row['city'] or '',
             'created_at': row['created_at'].strftime('%d.%m.%Y %H:%M') if row['created_at'] else ''
         })
 

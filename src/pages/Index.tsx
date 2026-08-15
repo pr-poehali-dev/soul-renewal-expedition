@@ -6,8 +6,8 @@ import SectionsBottom from "./SectionsBottom";
 
 const navItems = [
   { id: "home", label: "Главная" },
-  { id: "about", label: "О нас" },
   { id: "adygea", label: "Адыгея" },
+  { id: "about", label: "О нас" },
   { id: "places", label: "Крым" },
   { id: "practices", label: "Практики" },
   { id: "gallery", label: "Галерея" },
@@ -28,6 +28,7 @@ const Index = () => {
   const [formLoading, setFormLoading] = useState(false);
   const [formError, setFormError] = useState("");
   const [departureCity, setDepartureCity] = useState<string | null>(null);
+  const [extraServices, setExtraServices] = useState<string[]>([]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -91,6 +92,7 @@ const Index = () => {
         formLoading={formLoading} setFormLoading={setFormLoading}
         formError={formError} setFormError={setFormError}
         departureCity={departureCity} setDepartureCity={setDepartureCity}
+        extraServices={extraServices} setExtraServices={setExtraServices}
         scrollTo={scrollTo}
       />
     </div>
