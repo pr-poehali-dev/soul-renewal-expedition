@@ -86,7 +86,7 @@ const Index = () => {
       </nav>
 
       <SectionsTop scrollTo={scrollTo} />
-      <SectionsMid galleryIndex={galleryIndex} setGalleryIndex={setGalleryIndex} />
+      <SectionsMid galleryIndex={galleryIndex} setGalleryIndex={setGalleryIndex} scrollTo={scrollTo} />
       <SectionsBottom
         selectedExpedition={selectedExpedition} setSelectedExpedition={setSelectedExpedition}
         formName={formName} setFormName={setFormName}

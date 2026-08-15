@@ -160,7 +160,13 @@ const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
                     <div className="text-2xl mb-3">{place.icon}</div>
                     <h4 className="font-cormorant text-2xl text-[#e8ddd0] font-light mb-1">{place.name}</h4>
                     <p className="font-golos text-xs text-[#5a8a6e] mb-3 tracking-wide">{place.subtitle}</p>
-                    <p className="font-golos text-sm text-[#9a8f84] leading-relaxed">{place.desc}</p>
+                    <p className="font-golos text-sm text-[#9a8f84] leading-relaxed mb-5">{place.desc}</p>
+                    <button
+                      onClick={() => scrollTo("tariffs")}
+                      className="w-full py-2.5 border border-[#5a8a6e]/40 text-[#8ab89a] font-golos text-xs tracking-widest uppercase hover:bg-[#5a8a6e]/10 hover:border-[#5a8a6e] transition-all"
+                    >
+                      Забронировать
+                    </button>
                   </div>
                 </div>
               ))}

@@ -6,9 +6,10 @@ import { places, practices, reviews, galleryImages } from "./data";
 interface SectionsMidProps {
   galleryIndex: number;
   setGalleryIndex: (i: number) => void;
+  scrollTo: (id: string) => void;
 }
 
-const SectionsMid = ({ galleryIndex, setGalleryIndex }: SectionsMidProps) => {
+const SectionsMid = ({ galleryIndex, setGalleryIndex, scrollTo }: SectionsMidProps) => {
   const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
 
   const openLightbox = (images: string[], index = 0) => setLightbox({ images, index });
@@ -41,7 +42,13 @@ const SectionsMid = ({ galleryIndex, setGalleryIndex }: SectionsMidProps) => {
                 <div className="p-6">
                   <div className="text-2xl mb-3">{place.icon}</div>
                   <h3 className="font-cormorant text-2xl text-[#e8ddd0] font-light mb-2">{place.name}</h3>
-                  <p className="font-golos text-sm text-[#9a8f84] leading-relaxed">{place.desc}</p>
+                  <p className="font-golos text-sm text-[#9a8f84] leading-relaxed mb-5">{place.desc}</p>
+                  <button
+                    onClick={() => scrollTo("tariffs")}
+                    className="w-full py-2.5 border border-[#4a9db5]/40 text-[#4a9db5] font-golos text-xs tracking-widest uppercase hover:bg-[#4a9db5]/10 transition-all"
+                  >
+                    Забронировать
+                  </button>
                 </div>
               </div>
             ))}

@@ -231,7 +231,7 @@ const SectionsBottom = ({
           </div>
 
           {/* TARIFFS */}
-          <div className="text-center mb-10">
+          <div id="tariffs" className="text-center mb-10 scroll-mt-24">
             <p className="font-golos text-xs tracking-[0.3em] text-[#9a8f84] uppercase mb-3">Или выберите формат</p>
             <h3 className="font-cormorant text-3xl md:text-4xl font-light text-[#e8ddd0]">Варианты <em className="italic text-[#c9a96e]">тарифов</em></h3>
           </div>
