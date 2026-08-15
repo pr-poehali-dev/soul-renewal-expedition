@@ -245,14 +245,19 @@ const SectionsBottom = ({
                 <h4 className="font-cormorant text-2xl text-[#e8ddd0] font-light mb-2">{t.name}</h4>
                 <p className="font-golos text-xs text-[#9a8f84] leading-relaxed mb-5 flex-1">{t.desc}</p>
                 <div className="space-y-2 mb-5">
-                  {t.options.map((o) => (
-                    <div key={o.days} className="flex items-center justify-between px-3 py-2 border border-white/5 bg-[#0d1117]">
-                      <span className="font-golos text-xs text-[#9a8f84]">{o.days}</span>
-                      <span className="font-cormorant text-lg text-[#c9a96e]">{formatRub(o.price)}</span>
-                    </div>
-                  ))}
+                  {t.options.map((o) => {
+                    const displayPrice = adjustForCity(o.price, departureCity);
+                    return (
+                      <div key={o.days} className="flex items-center justify-between px-3 py-2 border border-white/5 bg-[#0d1117]">
+                        <span className="font-golos text-xs text-[#9a8f84]">{o.days}</span>
+                        <span className="font-cormorant text-lg text-[#c9a96e]">{formatRub(displayPrice ?? o.price)}</span>
+                      </div>
+                    );
+                  })}
                 </div>
-                <p className="font-golos text-[11px] text-[#9a8f84]/60 mb-5">{t.unit}</p>
+                <p className="font-golos text-[11px] text-[#9a8f84]/60 mb-5">
+                  {t.unit}{departureCity === "Москва" ? " · из Москвы +5 000 ₽" : ""}
+                </p>
                 <button
                   onClick={() => {
                     setSelectedTariff(t.id);
