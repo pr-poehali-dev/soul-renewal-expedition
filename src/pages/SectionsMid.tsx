@@ -61,7 +61,8 @@ const SectionsMid = ({ galleryIndex, setGalleryIndex, scrollTo }: SectionsMidPro
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <p className="font-golos text-xs tracking-[0.4em] text-[#4a9db5] uppercase mb-4">Чем наполнено путешествие</p>
-            <h2 className="font-cormorant text-5xl md:text-6xl font-light text-[#e8ddd0] mb-4">Примерная <em className="italic text-[#c9a96e]">программа</em></h2>
+            <h2 className="font-cormorant text-5xl md:text-6xl font-light text-[#e8ddd0] mb-4">Возможные <em className="italic text-[#c9a96e]">активности</em></h2>
+            <p className="font-golos text-sm text-[#9a8f84] max-w-xl mx-auto mt-4">Последовательность и наполненность программы может меняться в зависимости от группы, погоды и маршрута</p>
             <div className="section-divider mt-6" />
           </div>
           <div className="grid md:grid-cols-2 gap-6">
