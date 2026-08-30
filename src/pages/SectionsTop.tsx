@@ -2,6 +2,7 @@ import { useState } from "react";
 import Icon from "@/components/ui/icon";
 import Lightbox from "@/components/ui/Lightbox";
 import { HERO_IMG, ENERGY_IMG, adygheaTours, adygeaPlaces, retreatSpace } from "./data";
+import RetreatRequestForm from "@/components/RetreatRequestForm";
 
 interface SectionsTopProps {
   scrollTo: (id: string) => void;
@@ -9,6 +10,7 @@ interface SectionsTopProps {
 
 const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
   const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
+  const [showRetreatForm, setShowRetreatForm] = useState(false);
 
   const openLightbox = (images: string[], index = 0) => setLightbox({ images, index });
   const closeLightbox = () => setLightbox(null);
@@ -198,14 +200,21 @@ const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
                       </div>
                     ))}
                   </div>
-                  <button
-                    onClick={() => scrollTo("contact")}
-                    className="self-start px-6 py-2.5 border border-[#5a8a6e]/40 text-[#8ab89a] font-golos text-xs tracking-widest uppercase hover:bg-[#5a8a6e]/10 hover:border-[#5a8a6e] transition-all"
-                  >
-                    Узнать об аренде
-                  </button>
+                  {!showRetreatForm && (
+                    <button
+                      onClick={() => setShowRetreatForm(true)}
+                      className="self-start px-6 py-2.5 border border-[#5a8a6e]/40 text-[#8ab89a] font-golos text-xs tracking-widest uppercase hover:bg-[#5a8a6e]/10 hover:border-[#5a8a6e] transition-all"
+                    >
+                      Узнать об аренде
+                    </button>
+                  )}
                 </div>
               </div>
+              {showRetreatForm && (
+                <div className="px-10 pb-10 lg:px-14 lg:pb-14">
+                  <RetreatRequestForm />
+                </div>
+              )}
             </div>
           </div>
 

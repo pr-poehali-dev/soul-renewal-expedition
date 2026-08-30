@@ -24,6 +24,7 @@ def handler(event: dict, context) -> dict:
         }
 
     body = json.loads(event.get('body', '{}'))
+    request_type = body.get('request_type', 'expedition')
     name = body.get('name', '')
     phone = body.get('phone', '')
     expedition = body.get('expedition', '')
@@ -33,8 +34,17 @@ def handler(event: dict, context) -> dict:
     city = body.get('city', '')
     extra_services = body.get('extra_services', '')
     tariff_info = body.get('tariff_info', '')
+    participants = body.get('participants')
 
-    if not name or not phone or not expedition:
+    if request_type == 'retreat':
+        expedition = 'Аренда помещения для ретритов'
+        if not name or not phone or not departure_date or not participants:
+            return {
+                'statusCode': 400,
+                'headers': {'Access-Control-Allow-Origin': '*'},
+                'body': json.dumps({'error': 'Заполните обязательные поля'})
+            }
+    elif not name or not phone or not expedition:
         return {
             'statusCode': 400,
             'headers': {'Access-Control-Allow-Origin': '*'},
@@ -48,8 +58,8 @@ def handler(event: dict, context) -> dict:
         conn = psycopg2.connect(os.environ['DATABASE_URL'])
         cur = conn.cursor()
         cur.execute(
-            "INSERT INTO t_p9722231_soul_renewal_expedit.clients (name, phone, expedition, message, departure_date, from_moscow, extra_services, city, tariff_info) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-            (name, phone, expedition, message, departure_date, from_moscow, extra_services, city, tariff_info)
+            "INSERT INTO t_p9722231_soul_renewal_expedit.clients (name, phone, expedition, message, departure_date, from_moscow, extra_services, city, tariff_info, request_type, participants) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            (name, phone, expedition, message, departure_date, from_moscow, extra_services, city, tariff_info, request_type, participants)
         )
         conn.commit()
         cur.close()
@@ -66,17 +76,29 @@ def handler(event: dict, context) -> dict:
             city_note = f"\n🏙 Город: {city}" if city else ""
             extra_note = f"\n✨ Доп. услуги: {extra_services}" if extra_services else ""
             tariff_note = f"\n💳 Тариф: {tariff_info}" if tariff_info else ""
-            text = (
-                f"🏔 *Новая заявка на экспедицию*\n\n"
-                f"👤 Имя: {name}\n"
-                f"📞 Телефон: {phone}\n"
-                f"🗺 Экспедиция: {expedition}\n"
-                f"📅 Дата выезда: {departure_date or 'не указана'}{moscow_note}"
-                f"{city_note}"
-                f"{tariff_note}"
-                f"{extra_note}\n"
-                f"💬 Сообщение: {message or 'не указано'}"
-            )
+            participants_note = f"\n👥 Участников: {participants}" if participants else ""
+
+            if request_type == 'retreat':
+                text = (
+                    f"🏡 *Заявка на аренду помещения для ретритов*\n\n"
+                    f"👤 Имя: {name}\n"
+                    f"📞 Телефон: {phone}\n"
+                    f"📅 Даты: {departure_date or 'не указаны'}"
+                    f"{participants_note}\n"
+                    f"💬 Сообщение: {message or 'не указано'}"
+                )
+            else:
+                text = (
+                    f"🏔 *Новая заявка на экспедицию*\n\n"
+                    f"👤 Имя: {name}\n"
+                    f"📞 Телефон: {phone}\n"
+                    f"🗺 Экспедиция: {expedition}\n"
+                    f"📅 Дата выезда: {departure_date or 'не указана'}{moscow_note}"
+                    f"{city_note}"
+                    f"{tariff_note}"
+                    f"{extra_note}\n"
+                    f"💬 Сообщение: {message or 'не указано'}"
+                )
             tg_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
             tg_data = urllib.parse.urlencode({
                 'chat_id': chat_id,
@@ -100,24 +122,39 @@ def handler(event: dict, context) -> dict:
             msg['From'] = email_from
             msg['To'] = email_to
 
-            city_row = f"<tr><td style='padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; width: 140px;'>Город</td><td style='padding: 8px; border-bottom: 1px solid #eee;'>{city}</td></tr>" if city else ""
-            extra_row = f"<tr><td style='padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; width: 140px;'>Доп. услуги</td><td style='padding: 8px; border-bottom: 1px solid #eee;'>{extra_services}</td></tr>" if extra_services else ""
-            tariff_row = f"<tr><td style='padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; width: 140px;'>Тариф</td><td style='padding: 8px; border-bottom: 1px solid #eee;'>{tariff_info}</td></tr>" if tariff_info else ""
-            html = f"""
-            <html><body style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #4a9db5;">🏔 Новая заявка на экспедицию</h2>
-              <table style="width:100%; border-collapse: collapse;">
-                <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; width: 140px;">Имя</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{name}</td></tr>
-                <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Телефон</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{phone}</td></tr>
-                <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Экспедиция</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{expedition}</td></tr>
-                <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Дата выезда</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{departure_date or 'не указана'}{'  (из Москвы, +1 день)' if from_moscow else ''}</td></tr>
-                {city_row}
-                {tariff_row}
-                {extra_row}
-                <tr><td style="padding: 8px; font-weight: bold;">Сообщение</td><td style="padding: 8px;">{message or 'не указано'}</td></tr>
-              </table>
-            </body></html>
-            """
+            if request_type == 'retreat':
+                participants_row = f"<tr><td style='padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; width: 140px;'>Участников</td><td style='padding: 8px; border-bottom: 1px solid #eee;'>{participants}</td></tr>" if participants else ""
+                html = f"""
+                <html><body style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto;">
+                  <h2 style="color: #4a9db5;">🏡 Заявка на аренду помещения для ретритов</h2>
+                  <table style="width:100%; border-collapse: collapse;">
+                    <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; width: 140px;">Имя</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{name}</td></tr>
+                    <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Телефон</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{phone}</td></tr>
+                    <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Даты</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{departure_date or 'не указаны'}</td></tr>
+                    {participants_row}
+                    <tr><td style="padding: 8px; font-weight: bold;">Сообщение</td><td style="padding: 8px;">{message or 'не указано'}</td></tr>
+                  </table>
+                </body></html>
+                """
+            else:
+                city_row = f"<tr><td style='padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; width: 140px;'>Город</td><td style='padding: 8px; border-bottom: 1px solid #eee;'>{city}</td></tr>" if city else ""
+                extra_row = f"<tr><td style='padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; width: 140px;'>Доп. услуги</td><td style='padding: 8px; border-bottom: 1px solid #eee;'>{extra_services}</td></tr>" if extra_services else ""
+                tariff_row = f"<tr><td style='padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; width: 140px;'>Тариф</td><td style='padding: 8px; border-bottom: 1px solid #eee;'>{tariff_info}</td></tr>" if tariff_info else ""
+                html = f"""
+                <html><body style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto;">
+                  <h2 style="color: #4a9db5;">🏔 Новая заявка на экспедицию</h2>
+                  <table style="width:100%; border-collapse: collapse;">
+                    <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; width: 140px;">Имя</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{name}</td></tr>
+                    <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Телефон</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{phone}</td></tr>
+                    <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Экспедиция</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{expedition}</td></tr>
+                    <tr><td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold;">Дата выезда</td><td style="padding: 8px; border-bottom: 1px solid #eee;">{departure_date or 'не указана'}{'  (из Москвы, +1 день)' if from_moscow else ''}</td></tr>
+                    {city_row}
+                    {tariff_row}
+                    {extra_row}
+                    <tr><td style="padding: 8px; font-weight: bold;">Сообщение</td><td style="padding: 8px;">{message or 'не указано'}</td></tr>
+                  </table>
+                </body></html>
+                """
             msg.attach(MIMEText(html, 'html', 'utf-8'))
 
             with smtplib.SMTP_SSL('smtp.inbox.ru', 465) as server:
