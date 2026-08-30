@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
 import Lightbox from "@/components/ui/Lightbox";
-import { HERO_IMG, ENERGY_IMG, adygheaTours, adygeaPlaces } from "./data";
+import { HERO_IMG, ENERGY_IMG, adygheaTours, adygeaPlaces, retreatSpace } from "./data";
 
 interface SectionsTopProps {
   scrollTo: (id: string) => void;
@@ -170,6 +170,42 @@ const SectionsTop = ({ scrollTo }: SectionsTopProps) => {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Retreat space */}
+          <div id="retreat" className="mt-24 scroll-mt-24">
+            <div className="border border-[#5a8a6e]/20 overflow-hidden" style={{ background: "#0d1510" }}>
+              <div className="flex flex-col lg:flex-row">
+                <div className="lg:w-1/2 grid grid-cols-2 gap-0.5">
+                  {retreatSpace.images.map((img, j) => (
+                    <div key={j} className={`h-64 lg:h-full overflow-hidden cursor-zoom-in ${j === 0 ? "col-span-2 lg:col-span-1" : "hidden lg:block"}`} onClick={() => openLightbox(retreatSpace.images, j)}>
+                      <img src={img} alt={retreatSpace.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                    </div>
+                  ))}
+                </div>
+                <div className="lg:w-1/2 p-10 lg:p-14 flex flex-col justify-center">
+                  <p className="font-golos text-xs tracking-[0.4em] text-[#5a8a6e] uppercase mb-4">{retreatSpace.subtitle}</p>
+                  <h3 className="font-cormorant text-4xl md:text-5xl font-light text-[#e8ddd0] mb-5 leading-tight">
+                    {retreatSpace.title}
+                  </h3>
+                  <p className="font-golos text-[#9a8f84] leading-relaxed mb-8 text-sm">{retreatSpace.desc}</p>
+                  <div className="grid grid-cols-2 gap-4 mb-8">
+                    {retreatSpace.features.map((f, j) => (
+                      <div key={j} className="flex items-center gap-2">
+                        <span className="text-lg">{f.icon}</span>
+                        <span className="font-golos text-xs text-[#9a8f84]">{f.text}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => scrollTo("contact")}
+                    className="self-start px-6 py-2.5 border border-[#5a8a6e]/40 text-[#8ab89a] font-golos text-xs tracking-widest uppercase hover:bg-[#5a8a6e]/10 hover:border-[#5a8a6e] transition-all"
+                  >
+                    Узнать об аренде
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 

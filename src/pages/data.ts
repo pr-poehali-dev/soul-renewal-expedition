@@ -19,6 +19,9 @@ const PLACE_CHURUK = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c
 const ADYGEA_LAGONAKI = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/56087779-451a-40e3-aae3-1d9dac2e5682.jpg";
 const ADYGEA_ORLINAYA = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/72911bcf-4838-4d48-b066-e2ea3c8862af.jpg";
 const ADYGEA_SMOTROVAYA = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/bb20a24f-b1f7-4977-95a3-bd51e90806af.jpg";
+const DEGUAKO_VALLEY = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/d80fc11e-da63-456d-9f44-2fefbe58289c.jpg";
+const DEGUAKO_BANYA = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/a71a9495-56e0-40c9-9a24-dacbe7af195a.jpg";
+const RETREAT_HOUSE = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/7a3b099c-1649-4992-a769-bb6f2c64275a.jpg";
 
 export { HERO_IMG, ENERGY_IMG, PANORAMA_IMG };
 
@@ -84,6 +87,19 @@ export const romanticCamping = {
   title: "Романтический кемпинг на двоих",
   desc: "Уединённый кемпинг со всеми удобствами для двоих — идеально для особого момента среди гор. Организуется за отдельную плату.",
   icon: "💞",
+};
+
+export const retreatSpace = {
+  title: "Помещение для ретритов",
+  subtitle: "В живописном месте Адыгеи",
+  desc: "Отдельное пространство для групповых практик, семинаров и трансформационных ретритов — среди гор, в тишине и вдали от city-шума. Можно приехать своим ходом на автомобиле, а всё остальное — размещение, питание, программу и логистику — мы возьмём на себя.",
+  images: [RETREAT_HOUSE, DEGUAKO_BANYA],
+  features: [
+    { icon: "🚗", text: "Доступно на своём автомобиле" },
+    { icon: "🏔️", text: "Вид на горы Кавказа" },
+    { icon: "🧘", text: "Пространство для практик и семинаров" },
+    { icon: "🍲", text: "Питание и быт берём на себя" },
+  ],
 };
 
 export const reviews = [
@@ -341,5 +357,13 @@ export const adygeaPlaces = [
     icon: "🪶",
     img: ADYGEA_ORLINAYA,
     practice: "Энергия свободы",
+  },
+  {
+    name: "Долина Дегуако",
+    subtitle: "Между Гузериплем и Лаго-Наки",
+    desc: "Уединённая долина у реки, где горы дышат тишиной. Банька на берегу, кемпинговые стоянки у воды, озеро с зеркальной гладью и рыбалка на закате. Рядом — древние дольмены, хранящие память тысячелетий, и деревянный храм посреди леса. Рассветы здесь золотые, а закаты — цвета спелой черешни. Идеальная точка на пути между Гузериплем и Лаго-Наки, чтобы остановиться и выдохнуть.",
+    icon: "🏕️",
+    img: DEGUAKO_VALLEY,
+    practice: "Тишина и перезагрузка",
   },
 ];
