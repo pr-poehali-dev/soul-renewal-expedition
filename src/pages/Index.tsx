@@ -3,6 +3,7 @@ import Icon from "@/components/ui/icon";
 import SectionsTop from "./SectionsTop";
 import SectionsMid from "./SectionsMid";
 import SectionsBottom from "./SectionsBottom";
+import PromoTourModal from "@/components/PromoTourModal";
 
 const navItems = [
   { id: "home", label: "Главная" },
@@ -33,6 +34,18 @@ const Index = () => {
   const [tariffDays, setTariffDays] = useState<string>("");
   const [groupSize, setGroupSize] = useState<number>(3);
   const [customDate, setCustomDate] = useState<Date | undefined>(undefined);
+  const [promoOpen, setPromoOpen] = useState(false);
+
+  useEffect(() => {
+    const alreadyShown = sessionStorage.getItem("promoTourShown");
+    if (!alreadyShown) {
+      const timer = setTimeout(() => {
+        setPromoOpen(true);
+        sessionStorage.setItem("promoTourShown", "1");
+      }, 1200);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,6 +62,11 @@ const Index = () => {
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setMenuOpen(false);
+  };
+
+  const handlePromoBook = (expeditionName: string) => {
+    setSelectedExpedition(expeditionName);
+    scrollTo("booking");
   };
 
   return (
@@ -69,6 +87,13 @@ const Index = () => {
                 {item.label}
               </button>
             ))}
+            <button
+              onClick={() => setPromoOpen(true)}
+              className="flex items-center gap-1.5 px-4 py-2 border border-[#c9a96e]/50 text-[#c9a96e] font-golos text-xs tracking-widest uppercase hover:bg-[#c9a96e]/10 transition-all"
+            >
+              <Icon name="Sparkles" size={13} />
+              Пять чудес Адыгеи
+            </button>
           </div>
           <button className="lg:hidden text-[#9a8f84] hover:text-[#e8ddd0]" onClick={() => setMenuOpen(!menuOpen)}>
             <Icon name={menuOpen ? "X" : "Menu"} size={24} />
@@ -81,9 +106,18 @@ const Index = () => {
                 {item.label}
               </button>
             ))}
+            <button
+              onClick={() => { setPromoOpen(true); setMenuOpen(false); }}
+              className="flex items-center gap-1.5 mt-2 px-4 py-2.5 border border-[#c9a96e]/50 text-[#c9a96e] font-golos text-xs tracking-widest uppercase hover:bg-[#c9a96e]/10 transition-all justify-center"
+            >
+              <Icon name="Sparkles" size={13} />
+              Пять чудес Адыгеи
+            </button>
           </div>
         )}
       </nav>
+
+      <PromoTourModal open={promoOpen} onClose={() => setPromoOpen(false)} onBook={handlePromoBook} />
 
       <SectionsTop scrollTo={scrollTo} />
       <SectionsMid galleryIndex={galleryIndex} setGalleryIndex={setGalleryIndex} scrollTo={scrollTo} />
