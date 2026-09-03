@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
 import Lightbox from "@/components/ui/Lightbox";
-import { places, programItems, romanticCamping, reviews, galleryImages } from "./data";
+import { places, programItems, romanticCamping, fiveWondersGallery, reviews, galleryImages } from "./data";
 
 interface SectionsMidProps {
   galleryIndex: number;
@@ -18,6 +18,7 @@ const SectionsMid = ({ galleryIndex, setGalleryIndex, scrollTo }: SectionsMidPro
   const nextImage = () => lightbox && setLightbox({ ...lightbox, index: (lightbox.index + 1) % lightbox.images.length });
 
   const allPlaceImages = places.map(p => p.img);
+  const fiveWondersImages = fiveWondersGallery.map(p => p.img);
 
   return (
     <>
@@ -85,6 +86,42 @@ const SectionsMid = ({ galleryIndex, setGalleryIndex, scrollTo }: SectionsMidPro
               </div>
               <p className="font-golos text-sm text-[#9a8f84] leading-relaxed">{romanticCamping.desc}</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FIVE WONDERS GALLERY */}
+      <section id="five-wonders-gallery" className="py-32 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="font-golos text-xs tracking-[0.4em] text-[#c9a96e] uppercase mb-4">Фотогалерея тура</p>
+            <h2 className="font-cormorant text-5xl md:text-6xl font-light text-[#e8ddd0] mb-4">Пять <em className="italic text-[#c9a96e]">чудес Адыгеи</em></h2>
+            <p className="font-golos text-sm text-[#9a8f84] max-w-xl mx-auto mt-4">Пять локаций одного маршрута — от древнего монастыря до горного скита</p>
+            <div className="section-divider mt-6" />
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {fiveWondersGallery.map((spot, i) => (
+              <div key={i} className="group relative overflow-hidden bg-[#111820] hover-lift cursor-pointer border border-white/5 hover:border-[#c9a96e]/30 transition-colors">
+                <div className="h-56 overflow-hidden relative cursor-zoom-in" onClick={() => openLightbox(fiveWondersImages, i)}>
+                  <img src={spot.img} alt={spot.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#111820] to-transparent" />
+                  <div className="absolute top-3 right-3 bg-black/40 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Icon name="ZoomIn" size={14} className="text-white" />
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="text-2xl mb-3">{spot.icon}</div>
+                  <h3 className="font-cormorant text-2xl text-[#e8ddd0] font-light mb-2">{spot.name}</h3>
+                  <p className="font-golos text-sm text-[#9a8f84] leading-relaxed mb-5">{spot.desc}</p>
+                  <button
+                    onClick={() => scrollTo("booking")}
+                    className="w-full py-2.5 border border-[#c9a96e]/40 text-[#c9a96e] font-golos text-xs tracking-widest uppercase hover:bg-[#c9a96e]/10 transition-all"
+                  >
+                    Забронировать тур
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

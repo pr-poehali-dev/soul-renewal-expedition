@@ -22,6 +22,11 @@ const ADYGEA_SMOTROVAYA = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-9
 const DEGUAKO_VALLEY = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/d80fc11e-da63-456d-9f44-2fefbe58289c.jpg";
 const DEGUAKO_BANYA = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/a71a9495-56e0-40c9-9a24-dacbe7af195a.jpg";
 const RETREAT_HOUSE = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/7a3b099c-1649-4992-a769-bb6f2c64275a.jpg";
+const FIVE_WONDERS_MONASTERY = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/fe777d58-0b3e-4ad2-aa5f-cf6eae6c3469.jpg";
+const FIVE_WONDERS_GUZERIPL = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/2c8ac9cd-a6b1-4e9f-b765-5b8cbad45c0f.jpg";
+const FIVE_WONDERS_CAVE = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/07cd6a42-cf1d-4bb7-8ef0-2a4b0b9ac28d.jpg";
+const FIVE_WONDERS_PLATEAU = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/fac16f74-01b7-43fa-bd36-c060fcfd9684.jpg";
+const FIVE_WONDERS_DEGUAKO = "https://cdn.poehali.dev/projects/0c801b77-5392-43f8-973b-c08b2a31aeda/files/102ac6a4-97e5-4777-a581-72ffc603e6ab.jpg";
 
 export { HERO_IMG, ENERGY_IMG, PANORAMA_IMG };
 
@@ -81,6 +86,14 @@ export const programItems = [
   { title: "Посещение монастыря", desc: "Древние намоленные места — тишина и особая атмосфера покоя.", icon: "⛪" },
   { title: "Горные походы", desc: "Осознанные восхождения к вершинам и смотровым площадкам.", icon: "🥾" },
   { title: "Ночь у огня", desc: "Вечерние посиделки у костра под звёздным небом.", icon: "🔥" },
+];
+
+export const fiveWondersGallery = [
+  { name: "Свято-Михайло-Афонский монастырь", desc: "Экскурсия по территории, посещение древнего подземного храма и келий", img: FIVE_WONDERS_MONASTERY, icon: "⛪" },
+  { name: "Посёлок Гузерипль", desc: "Кавказский биосферный заповедник, музей природы, крупнейший дольмен Адыгеи", img: FIVE_WONDERS_GUZERIPL, icon: "🌲" },
+  { name: "Большая Азишская пещера", desc: "Оборудованный маршрут одного из красивейших подземных лабиринтов Европы", img: FIVE_WONDERS_CAVE, icon: "🕳️" },
+  { name: "Плато Азиш-Тау и скала Утюг", desc: "Панорамные смотровые площадки Главного Кавказского хребта", img: FIVE_WONDERS_PLATEAU, icon: "🏔️" },
+  { name: "Долина Дегуако", desc: "Православный скит во имя Святой Троицы и святой источник", img: FIVE_WONDERS_DEGUAKO, icon: "🏕️" },
 ];
 
 export const romanticCamping = {
