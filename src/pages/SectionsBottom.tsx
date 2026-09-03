@@ -43,8 +43,9 @@ function getAvailableDates(isMoscow: boolean): { date: Date; label: string }[] {
 
 const CITIES = ["Ростов-на-Дону", "Краснодар", "Москва"];
 
-function getPrice(basePrice: string, city: string | null): string {
+function getPrice(basePrice: string, city: string | null, pricesByCity?: Record<string, string>): string {
   if (!city) return "";
+  if (pricesByCity && pricesByCity[city]) return pricesByCity[city];
   if (city === "Москва" && basePrice !== "уточняется") {
     const num = parseInt(basePrice.replace(/\D/g, ""), 10);
     return `${(num + 5000).toLocaleString("ru-RU")} ₽`;
@@ -141,7 +142,13 @@ const SectionsBottom = ({
 
   type ScheduleItem = { time: string; desc: string };
   type DayBlock = { day: string; subtitle: string; items: ScheduleItem[] };
-  type ExpWithSchedule = (typeof expeditions)[0] & { schedule?: DayBlock[] };
+  type ExpWithSchedule = (typeof expeditions)[0] & {
+    schedule?: DayBlock[];
+    pricesByCity?: Record<string, string>;
+    transport?: string;
+    accommodation?: string;
+    meals?: string;
+  };
   const expsTyped = expeditions as ExpWithSchedule[];
   const [scheduleExp, setScheduleExp] = useState<ExpWithSchedule | null>(null);
 
@@ -188,16 +195,41 @@ const SectionsBottom = ({
                 <h3 className="font-cormorant text-2xl text-[#e8ddd0] font-light mb-1">{exp.name}</h3>
                 {departureCity && exp.price !== "уточняется" && (
                   <div className="font-cormorant text-3xl text-[#c9a96e] font-light mb-3">
-                    {getPrice(exp.price, departureCity)}
+                    {getPrice(exp.price, departureCity, exp.pricesByCity)}
+                    {isMoscow && exp.pricesByCity && (
+                      <span className="font-golos text-xs text-[#9a8f84]/60 ml-2">(+1 день)</span>
+                    )}
                   </div>
                 )}
                 {!departureCity && (
                   <div className="font-golos text-xs text-[#9a8f84]/50 mb-3 italic">выберите город для цены</div>
                 )}
-                <div className="flex items-center gap-2 mb-5">
+                <div className="flex items-center gap-2 mb-3">
                   <Icon name="MapPin" size={12} className="text-[#4a9db5] shrink-0" />
                   <span className="font-golos text-xs text-[#9a8f84] leading-relaxed">{exp.places}</span>
                 </div>
+                {(exp.transport || exp.accommodation || exp.meals) && (
+                  <div className="space-y-1.5 mb-5">
+                    {exp.transport && (
+                      <div className="flex items-center gap-2">
+                        <Icon name="Bus" size={12} className="text-[#5a8a6e] shrink-0" />
+                        <span className="font-golos text-[11px] text-[#9a8f84]/80">{exp.transport}</span>
+                      </div>
+                    )}
+                    {exp.accommodation && (
+                      <div className="flex items-center gap-2">
+                        <Icon name="Home" size={12} className="text-[#5a8a6e] shrink-0" />
+                        <span className="font-golos text-[11px] text-[#9a8f84]/80">{exp.accommodation}</span>
+                      </div>
+                    )}
+                    {exp.meals && (
+                      <div className="flex items-center gap-2">
+                        <Icon name="UtensilsCrossed" size={12} className="text-[#5a8a6e] shrink-0" />
+                        <span className="font-golos text-[11px] text-[#9a8f84]/80">{exp.meals}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
                 <div className="space-y-3 mb-6 flex-1">
                   {exp.program.map((day, d) => (
                     <div key={d} className="flex gap-3">
