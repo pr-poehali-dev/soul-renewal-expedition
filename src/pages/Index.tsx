@@ -11,6 +11,7 @@ const navItems = [
   { id: "about", label: "О нас" },
   { id: "places", label: "Крым" },
   { id: "practices", label: "Программа" },
+  { id: "five-wonders-gallery", label: "Пять чудес Адыгеи" },
   { id: "gallery", label: "Галерея" },
   { id: "reviews", label: "Отзывы" },
   { id: "booking", label: "Бронирование" },
