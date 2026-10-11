@@ -65,6 +65,16 @@ const BookingExpeditions = ({
                 )}
               </div>
             )}
+            {departureCity && exp.priceOptions && (
+              <div className="space-y-1 mb-3">
+                {exp.priceOptions.map((o) => (
+                  <div key={o.days} className="flex items-center justify-between font-golos text-xs text-[#9a8f84]">
+                    <span>{o.days}</span>
+                    <span className="text-[#c9a96e]">{(isMoscow ? o.price + 5000 : o.price).toLocaleString("ru-RU")} ₽</span>
+                  </div>
+                ))}
+              </div>
+            )}
             {!departureCity && (
               <div className="font-golos text-xs text-[#9a8f84]/50 mb-3 italic">выберите город для цены</div>
             )}

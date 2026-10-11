@@ -5,6 +5,7 @@ export type DayBlock = { day: string; subtitle: string; items: ScheduleItem[] };
 export type ExpWithSchedule = (typeof expeditions)[0] & {
   schedule?: DayBlock[];
   pricesByCity?: Record<string, string>;
+  priceOptions?: { days: string; price: number }[];
   transport?: string;
   accommodation?: string;
   meals?: string;

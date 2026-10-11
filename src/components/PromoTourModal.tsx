@@ -45,11 +45,20 @@ const PromoTourModal = ({ open, onClose, onBook }: PromoTourModalProps) => {
             ))}
           </div>
 
-          <div className="grid grid-cols-3 gap-3 mb-6 text-center">
-            {Object.entries(tour.pricesByCity || {}).map(([city, price]) => (
-              <div key={city} className="p-3 border border-white/10 bg-[#111820]">
-                <div className="font-golos text-[10px] text-[#9a8f84] mb-1">{city}</div>
-                <div className="font-cormorant text-xl text-[#c9a96e]">{price}</div>
+          <div className="space-y-3 mb-6">
+            {(tour.priceOptions || []).map((opt) => (
+              <div key={opt.days} className="border border-white/10 bg-[#111820] p-3">
+                <div className="font-golos text-xs text-[#5a8a6e] mb-2 tracking-wide">{opt.days}</div>
+                <div className="grid grid-cols-3 gap-3 text-center">
+                  {Object.keys(tour.pricesByCity || {}).map((city) => (
+                    <div key={city}>
+                      <div className="font-golos text-[10px] text-[#9a8f84] mb-1">{city}</div>
+                      <div className="font-cormorant text-xl text-[#c9a96e]">
+                        {(city === "Москва" ? opt.price + 5000 : opt.price).toLocaleString("ru-RU")} ₽
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
