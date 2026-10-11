@@ -62,6 +62,7 @@ const SectionsBottom = ({
   };
   const isMoscow = departureCity === "Москва";
   const [selectedDate, setSelectedDate] = useState("");
+  const [wonderDays, setWonderDays] = useState("");
 
   const activeTariff = tariffs.find((t) => t.id === selectedTariff) || null;
   const activeTariffOption = activeTariff?.options.find((o) => o.days === tariffDays) || activeTariff?.options[0] || null;
@@ -97,6 +98,8 @@ const SectionsBottom = ({
             expsTyped={expsTyped}
             setScheduleExp={setScheduleExp}
             setSelectedExpedition={setSelectedExpedition}
+            wonderDays={wonderDays}
+            setWonderDays={setWonderDays}
           />
 
           <TariffsSection
@@ -142,6 +145,8 @@ const SectionsBottom = ({
             groupSize={groupSize}
             tariffPrice={tariffPrice}
             formatRub={formatRub}
+            wonderDays={wonderDays}
+            setWonderDays={setWonderDays}
           />
         </div>
       </section>

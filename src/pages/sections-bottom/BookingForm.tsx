@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
 import Icon from "@/components/ui/icon";
@@ -43,6 +42,8 @@ interface BookingFormProps {
   groupSize: number;
   tariffPrice: number | null;
   formatRub: (n: number) => string;
+  wonderDays: string;
+  setWonderDays: (v: string) => void;
 }
 
 const BookingForm = ({
@@ -64,8 +65,9 @@ const BookingForm = ({
   groupSize,
   tariffPrice,
   formatRub,
+  wonderDays,
+  setWonderDays,
 }: BookingFormProps) => {
-  const [wonderDays, setWonderDays] = useState("");
   const wonderTour = expeditions.find((e) => e.name === FIVE_WONDERS);
   const wonderOptions = wonderTour?.priceOptions || [];
   const isWonder = selectedExpedition === FIVE_WONDERS && wonderOptions.length > 0;

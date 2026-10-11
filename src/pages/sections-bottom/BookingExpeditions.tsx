@@ -10,6 +10,8 @@ interface BookingExpeditionsProps {
   expsTyped: ExpWithSchedule[];
   setScheduleExp: (v: ExpWithSchedule | null) => void;
   setSelectedExpedition: (v: string) => void;
+  wonderDays: string;
+  setWonderDays: (v: string) => void;
 }
 
 const BookingExpeditions = ({
@@ -20,6 +22,8 @@ const BookingExpeditions = ({
   expsTyped,
   setScheduleExp,
   setSelectedExpedition,
+  wonderDays,
+  setWonderDays,
 }: BookingExpeditionsProps) => {
   return (
     <>
@@ -67,12 +71,20 @@ const BookingExpeditions = ({
             )}
             {departureCity && exp.priceOptions && (
               <div className="space-y-1 mb-3">
-                {exp.priceOptions.map((o) => (
-                  <div key={o.days} className="flex items-center justify-between font-golos text-xs text-[#9a8f84]">
-                    <span>{o.days}</span>
-                    <span className="text-[#c9a96e]">{(isMoscow ? o.price + 5000 : o.price).toLocaleString("ru-RU")} ₽</span>
-                  </div>
-                ))}
+                {exp.priceOptions.map((o) => {
+                  const active = (wonderDays || exp.priceOptions![0].days) === o.days;
+                  return (
+                    <button
+                      key={o.days}
+                      type="button"
+                      onClick={() => setWonderDays(o.days)}
+                      className={`w-full flex items-center justify-between px-3 py-2 border font-golos text-xs transition-all ${active ? "border-[#c9a96e] bg-[#c9a96e]/10 text-[#e8ddd0]" : "border-white/10 text-[#9a8f84] hover:border-[#c9a96e]/40"}`}
+                    >
+                      <span>{o.days}</span>
+                      <span className="text-[#c9a96e]">{(isMoscow ? o.price + 5000 : o.price).toLocaleString("ru-RU")} ₽</span>
+                    </button>
+                  );
+                })}
               </div>
             )}
             {!departureCity && (
