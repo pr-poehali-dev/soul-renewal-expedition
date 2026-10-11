@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
 import Icon from "@/components/ui/icon";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { expeditions, tariffs } from "../data";
-import { BLOCKED_START, BLOCKED_END } from "./utils";
+import { BLOCKED_START, BLOCKED_END, adjustForCity } from "./utils";
+
+const FIVE_WONDERS = "Пять чудес Адыгеи";
 
 const EXTRA_SERVICES = [
   { id: "horse", label: "Конные прогулки", icon: "🐎" },
@@ -62,6 +65,13 @@ const BookingForm = ({
   tariffPrice,
   formatRub,
 }: BookingFormProps) => {
+  const [wonderDays, setWonderDays] = useState("");
+  const wonderTour = expeditions.find((e) => e.name === FIVE_WONDERS);
+  const wonderOptions = wonderTour?.priceOptions || [];
+  const isWonder = selectedExpedition === FIVE_WONDERS && wonderOptions.length > 0;
+  const wonderOption = wonderOptions.find((o) => o.days === wonderDays) || wonderOptions[0] || null;
+  const wonderPrice = isWonder && wonderOption ? adjustForCity(wonderOption.price, departureCity) : null;
+
   return (
     <div className="max-w-2xl mx-auto p-8 bg-[#111820] border border-white/5">
       <h3 className="font-cormorant text-3xl text-[#e8ddd0] font-light mb-2 text-center">Записаться в экспедицию</h3>
@@ -175,6 +185,31 @@ const BookingForm = ({
               ))}
             </div>
           )}
+          {isWonder && (
+            <div className="mb-4 p-4 border border-[#c9a96e]/30 bg-[#c9a96e]/5">
+              <div className="flex items-center gap-2 mb-3">
+                <Icon name="Clock" size={12} className="text-[#c9a96e]" />
+                <span className="font-golos text-xs text-[#9a8f84] uppercase tracking-wide">Длительность тура</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 mb-3">
+                {wonderOptions.map((o) => (
+                  <button
+                    key={o.days}
+                    type="button"
+                    onClick={() => setWonderDays(o.days)}
+                    className={`px-3 py-2.5 font-golos text-xs border transition-all ${wonderOption?.days === o.days ? "border-[#c9a96e] bg-[#c9a96e]/10 text-[#c9a96e]" : "border-white/10 bg-[#0d1117] text-[#9a8f84] hover:border-[#c9a96e]/40"}`}
+                  >
+                    {o.days}
+                  </button>
+                ))}
+              </div>
+              {wonderPrice !== null ? (
+                <div className="font-cormorant text-2xl text-[#c9a96e] font-light">Итого: {formatRub(wonderPrice)}</div>
+              ) : (
+                <p className="font-golos text-xs text-[#9a8f84]/60">Выберите город выезда выше, чтобы увидеть стоимость</p>
+              )}
+            </div>
+          )}
           <div className="mb-4">
             <div className="flex items-center gap-2 mb-2">
               <Icon name="Sparkles" size={12} className="text-[#4a9db5]" />
@@ -231,12 +266,14 @@ const BookingForm = ({
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
-                    name: formName, phone: formPhone, expedition: selectedExpedition, message: formMessage,
+                    name: formName, phone: formPhone, expedition: isWonder && wonderOption ? `${selectedExpedition} · ${wonderOption.days}` : selectedExpedition, message: formMessage,
                     date: selectedDate, from_moscow: isMoscow, city: departureCity,
                     extra_services: extraServices.join(", "),
                     tariff_info: activeTariff
                       ? `${activeTariff.name} · ${tariffDays}${(activeTariff.id === "family" || activeTariff.id === "energy") ? ` · ${groupSize} чел.` : ""}${tariffPrice !== null ? ` · ${formatRub(tariffPrice)}` : ""}`
-                      : "",
+                      : isWonder && wonderOption
+                        ? `${wonderOption.days}${wonderPrice !== null ? ` · ${formatRub(wonderPrice)}` : ""}`
+                        : "",
                   }),
                 });
                 if (res.ok) {
