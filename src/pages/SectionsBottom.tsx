@@ -97,7 +97,10 @@ const SectionsBottom = ({
             isMoscow={isMoscow}
             expsTyped={expsTyped}
             setScheduleExp={setScheduleExp}
-            setSelectedExpedition={setSelectedExpedition}
+            setSelectedExpedition={(name) => {
+              setSelectedExpedition(name);
+              scrollTo("booking-form");
+            }}
             wonderDays={wonderDays}
             setWonderDays={setWonderDays}
           />

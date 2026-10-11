@@ -75,7 +75,7 @@ const BookingForm = ({
   const wonderPrice = isWonder && wonderOption ? adjustForCity(wonderOption.price, departureCity) : null;
 
   return (
-    <div className="max-w-2xl mx-auto p-8 bg-[#111820] border border-white/5">
+    <div id="booking-form" className="max-w-2xl mx-auto p-8 bg-[#111820] border border-white/5 scroll-mt-24">
       <h3 className="font-cormorant text-3xl text-[#e8ddd0] font-light mb-2 text-center">Записаться в экспедицию</h3>
       <p className="font-golos text-sm text-[#9a8f84] text-center mb-8">Выберите маршрут и оставьте заявку — свяжемся в течение дня</p>
       {formSent ? (
